@@ -3,7 +3,7 @@
   
   <head>
     <meta charset="UTF-8">
-    <title>欢迎页面-{{session('adminBiaoti') ? session('adminBiaoti') : "x-admin"}}</title>
+    <title>后台登录-X-admin2.1</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
      
@@ -79,9 +79,9 @@
             </tr>
             @foreach($v['child'] as $val)
 
-              <tr cate-id='{{$val['id']}}' fid='{{$val['pid']}}' >
+              <tr cate-id="{{$val['id']}}" fid="{{$val['pid']}}" >
                 <td>
-                  <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{{$val['id']}}'><i class="layui-icon">&#xe605;</i></div>
+                  <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id="{{$val['id']}}"><i class="layui-icon">&#xe605;</i></div>
                 </td>
                 <td>{{$val['id']}}</td>
                 <td>&nbsp;&nbsp;
