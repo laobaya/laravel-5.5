@@ -20,27 +20,35 @@ Route::get('/', function () {
 Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
 
 	//加载后台首页
-	Route::get('/', 'IndexController@index')->name('admin');
+	Route::GET('/', 'IndexController@index')->name('admin');
 
 	// 加载后台welcome页
-	Route::get('welcome','IndexController@welcome');
+	Route::GET('welcome','IndexController@welcome');
 
 	// 加载后台首页菜单
-	Route::get('left','IndexController@left');
+	Route::GET('left','IndexController@left');
 
 
 	// 菜单管理
 	Route::group(['prefix'=>'menu','middleware'=>[]],function(){
 
-
-		Route::get('/','MenuController@index');
-		/*Route::post('menudel/{v}', 'MenuController@menudel');
-		Route::put('menuorder', 'MenuController@menuorder');
-		Route::put('menustate', 'MenuController@menustate');
-		Route::post('menudelall', 'MenuController@menudelall');
-		Route::get('menu/{menu}/add', 'MenuController@menuadd');
-		Route::post('menu/{menu}/add', 'MenuController@menuinsert');*/
+		Route::GET('/','MenuController@index');
+		Route::GET('{menu}/add', 'MenuController@add');
+		Route::POST('{menu}/add', 'MenuController@insert');
+		Route::GET('{menu}/edit', 'MenuController@edit');
+		Route::POST('{menu}/edit', 'MenuController@update');
+		Route::DELETE('{menu}', 'MenuController@del');
+		Route::PUT('{menu}', 'MenuController@state');
+		Route::POST('{menu}', 'MenuController@order');
 
 	});
+
+	// 友情链接
+	Route::group(['prefix'=>'mylink','middleware'=>[]],function(){
+
+
+
+	});
+
 
 });
