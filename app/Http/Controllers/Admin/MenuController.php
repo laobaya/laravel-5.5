@@ -15,7 +15,7 @@ class MenuController extends CommonController
 		$this->request = $request;
 		$this->CM = 'menu';//声明控制器模板路径
 		$this->PathArr = ['index'=>'index','add'=>'add','edit'=>'edit'];//声明访问文件
-		$this->model = $menu;
+		$this->model = $menu;//加载model类
 
 	}
 
@@ -23,7 +23,7 @@ class MenuController extends CommonController
 	public function index(){
 
 		$cate_name = $this->request->input('cate_name');
-        $toload = $this->model->menuIndex($cate_name);
+    $toload = $this->model->menuIndex($this->request);
         // dump($toload);
 		return self::loadView($toload);
 

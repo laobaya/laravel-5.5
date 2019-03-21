@@ -18,7 +18,7 @@ class Menu extends Model
     /*
     * 递归调用菜单数据
     */
-    public function sortMenu($menus,$pid=0)
+    protected function sortMenu($menus,$pid=0)
     {
         $arr = [];
         if (empty($menus)) {
@@ -35,8 +35,9 @@ class Menu extends Model
     }
 
     // 加载首页
-    public function menuIndex($cate_name = ''){
+    public function menuIndex($request){
 
+        $cate_name = $request->input('cate_name');
         //判断是否是否传入
         if($cate_name){
             $this->insert(['name'=>$cate_name]);
@@ -123,6 +124,7 @@ class Menu extends Model
         return $result;
     }
 
+    //修改
     public function menuState($arr){
 
         $res = $this->where('id',$this['id'])->update($arr);

@@ -51,4 +51,18 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
 	});
 
 
+	//库存
+	Route::group(['prefix'=>'ware','middleware'=>[]],function(){
+
+		Route::GET('/','WareController@index');
+		Route::GET('add','WareController@add');
+		Route::POST('add','WareController@insert');
+		Route::GET('{ware}/info','WareController@info');
+		Route::GET('{ware}/edit','WareController@edit');
+		Route::DELETE('{menu}', 'WareController@del');
+		
+
+
+	});
+
 });
