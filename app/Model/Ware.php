@@ -52,6 +52,14 @@ class Ware extends Model
     }
 
     public function wareDel(){
+        $res = $this->destroy();
+            
+        if($res){
+            $result = array('res'=>0,'msg'=>'删除成功');
+        }else{
+            $result = array('res'=>1,'msg'=>'删除失败');
+        }
+        return $result;
         
     }
 

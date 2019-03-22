@@ -60,7 +60,10 @@ class WareController extends CommonController
 	}
 
 
-	public function del(){
-		
+	public function del(Ware $ware){
+		$result = $ware->wareDel();
+   		return $result;
 	}
+
+
 }
