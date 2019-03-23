@@ -19,6 +19,21 @@
             <li>
                 <a href="javascript:;">
                     <i class="iconfont">&#xe6b8;</i>
+                    <cite>仓库</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li date-refresh="1">
+                        <a _href="ware">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>仓库列表</cite>
+                        </a>
+                    </li> 
+                </ul>
+            </li>
+            <!-- <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6b8;</i>
                     <cite>会员管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
@@ -240,7 +255,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> -->
         </ul>
     </div>
 </div>

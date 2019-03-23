@@ -30,7 +30,7 @@
                   <span class="x-red">*</span>操作名
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="name" name="name" required="" value="{{$ware['name']}}" lay-verify="required"
+                  <input type="text" id="name" name="name" required="" lay-verify="required"
                   autocomplete="off" class="layui-input">
               </div>
           </div>
@@ -40,7 +40,7 @@
                   <span class="x-red">*</span>手机号
               </label>
               <div class="layui-input-inline">
-                  <input type="text" name="phone" required="" value="{{$ware['phone']}}" 
+                  <input type="text" name="phone" required="" lay-verify="phone"
                   autocomplete="off" class="layui-input">
               </div>
           </div>
@@ -51,9 +51,9 @@
               </label>
               <div class="layui-input-inline">
                   <select id="type" name="type" class="valid">
-                    <option value="0" {{$ware['type'] == 0 ? "selected" : ""}}>入库</option>
-                    <option value="1" {{$ware['type'] == 1 ? "selected" : ""}}>出库</option>
-                    <option value="-1" {{$ware['type'] == -1 ? "selected" : ""}}>报废</option>
+                    <option value="0">入库</option>
+                    <option value="1">出库</option>
+                    <option value="-1">报废</option>
                   </select>
               </div>
           </div>
@@ -62,7 +62,7 @@
                   备注
               </label>
               <div class="layui-input-block">
-                  <textarea placeholder="请输入内容" id="desc" name="remark" class="layui-textarea">{{$ware['remark']}}</textarea>
+                  <textarea placeholder="请输入内容" id="desc" name="remark" class="layui-textarea"></textarea>
               </div>
           </div>
           <div class="layui-form-item">

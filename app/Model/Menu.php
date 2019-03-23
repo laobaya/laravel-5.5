@@ -109,10 +109,10 @@ class Menu extends Model
     // 删除
     public function menuDel(){
 
-        if($this->pid == 0){
+        if($this['pid'] == 0){
             $result = array('res'=>400,'msg'=>'权限不足');
         }else{
-            $res = $this->destroy();
+            $res = $this->destroy($this['id']);
             
             if($res){
                 $result = array('res'=>0,'msg'=>'删除成功');

@@ -17,8 +17,8 @@ class Ware extends Model
 
     //首页
     public function wareIndex($request){
-        // dump($request->input());
-        $ware = $this->paginate(10);
+        
+        $ware = $this->paginate(1);
         $toload = array(
             'ware'=>$ware
         );
@@ -51,8 +51,22 @@ class Ware extends Model
         return $toload;
     }
 
+    public function wareUpdate($data){
+
+        // dump($data);
+        $res = $this->where('id',$this['id'])->update($data);
+        if($res){
+            $result = array('res'=>0,'msg'=>'修改成功');
+        }else{
+            $result = array('res'=>1,'msg'=>'修改失败');
+        }
+        return $result;
+    }
+
     public function wareDel(){
-        $res = $this->destroy();
+
+        // dd($this['id']);
+        $res = $this->destroy($this['id']);
             
         if($res){
             $result = array('res'=>0,'msg'=>'删除成功');
@@ -61,6 +75,26 @@ class Ware extends Model
         }
         return $result;
         
+    }
+
+    public function wareInfos($data){
+
+        $limit = isset($data['limit']) ? : 10;
+
+        $ware = $this->wareInfo()->paginate($limit);
+        // dump($ware);
+        if(!empty($ware)){
+            $result = array(
+                'code'=>0,
+                'msg'=>'获取成功',
+                'data'=>$ware->items(),
+                'count'=>$ware->total()
+            );
+        }else{
+            $result = array('code'=>1,'msg'=>'获取失败');
+        }
+        return $result;
+
     }
 
     //绑定对应的订单详情

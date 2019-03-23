@@ -15,7 +15,7 @@
   <script type="text/javascript" src="/static/js/cookie.js"></script>
   <script>
       // 是否开启刷新记忆tab功能
-      // var is_remember = false;
+      var is_remember = false;
   </script>
 </head>
 <body>
