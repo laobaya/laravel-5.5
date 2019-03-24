@@ -76,7 +76,7 @@ class WareController extends CommonController
 		//判断是否是调用数据
 		if($is_data){
 			$data = $this->request->input();
-			$result = $ware->wareInfos($data);
+			$result = $ware->wareInfoindex($data);
 			return $result;
 		}
 
@@ -87,6 +87,22 @@ class WareController extends CommonController
 	public function infoadd(Ware $ware){
 
 		return self::loadView();
+
+	}
+
+	public function infoinsert(Ware $ware){
+
+		$data = $this->request->except(['_token']);
+		$result = $ware->wareInfoinsert($data);
+        return $result;
+
+	}
+
+	public function infodel(Ware $ware){
+
+		$data = $this->request->except(['_token','_method']);
+		$result = $ware->wareInfodel($data);
+        return $result;
 
 	}
 

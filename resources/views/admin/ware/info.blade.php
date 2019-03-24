@@ -37,20 +37,22 @@
         <form class="layui-form layui-col-md12 x-so">
           <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
           <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
-          <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+          <input type="text" name="name"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <table class="layui-table" lay-data="{url:'./info?data=true',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="test">
         <thead>
+
           <tr>
             <th lay-data="{type:'checkbox'}">ID</th>
             <th lay-data="{field:'id', width:80, sort: true}">ID</th>
-            <th lay-data="{field:'username', width:120, sort: true, edit: 'text'}">用户名</th>
-            <th lay-data="{field:'email', edit: 'text', minWidth: 150}">邮箱</th>
-            <th lay-data="{field:'sex', width:80,templet: '#switchTpl'}">性别</th>
-            <th lay-data="{field:'city', edit: 'text', minWidth: 100}">城市</th>
-            <th lay-data="{field:'experience', sort: true, edit: 'text'}">积分</th>
+            <th lay-data="{field:'product', minWidth: 100}">产品</th>
+            <th lay-data="{field:'created_at', width:160, sort: true}">创建时间</th>
+            <th lay-data="{field:'order_number', edit: 'text', minWidth: 150}">单号</th>
+            <th lay-data="{field:'state','event':'state', width:150,templet: '#switchTpl'}">状态</th>
+            <th lay-data="{field:'number', edit: 'int', minWidth: 100}">数量</th>
+            <th lay-data="{field:'remark', edit: 'text'}">备注</th>
           </tr>
         </thead>
       </table>
@@ -59,14 +61,15 @@
     <script type="text/html" id="toolbarDemo">
       <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="del">删除</button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
         <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
       </div>
     </script>
     <script type="text/html" id="switchTpl">
-      <!-- 这里的 checked 的状态只是演示 -->
-      <input type="checkbox" name="sex" value="@{{d.id}}" lay-skin="switch" lay-text="女|男" lay-filter="sexDemo" @{{ d.id == 10003 ? 'checked' : '' }}>
+      <!-- 设置状态模板 -->
+      <input type="checkbox" name="state" value="@{{d.state}}" lay-skin="switch" lay-text="审核通过|审核中" lay-filter="stateDemo" @{{ d.state == 0 ? 'checked' : '' }}>
     </script>
     <script>
       layui.use('laydate', function(){
@@ -99,9 +102,12 @@
 
       //头工具栏事件
       table.on('toolbar(test)', function(obj){
+        
         var checkStatus = table.checkStatus(obj.config.id);
+        console.log(obj.config.index);
+        console.log(checkStatus);
         switch(obj.event){
-          case 'add':
+          case 'add':// 添加
             layer.open({
               type: 2, 
               skin: 'layui-layer-rim', //加上边框
@@ -109,6 +115,22 @@
               content: 'info/add'  
               //content: 'info/add' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
             });
+          break;
+          case 'del'://删除
+            var data = checkStatus.data;
+
+            if(data.length != 1){
+              layer.msg('请选择1个进行删除！');
+            }else{
+              
+              $.post(' ',{'id':data[0].id,'_token':"{{ csrf_token() }}",'_method':'DELETE'},function(msg){
+                  // console.log(m);
+                  if(msg.res == 1){
+                    $("tr[data-index='" + 1 + "']").remove();
+                  }
+                  layer.msg(msg.msg);
+              });
+            }
           break;
           case 'getCheckData':
             var data = checkStatus.data;
@@ -123,6 +145,13 @@
           break;
         };
       });
+
+
+      // 复选框事件
+      table.on('checkbox(switchTpl)', function(obj){
+        console.log(obj)
+      });
+
     });
     </script>
     

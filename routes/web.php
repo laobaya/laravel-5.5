@@ -63,7 +63,9 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
 		//详情
 		Route::GET('{ware}/info','WareController@info');
 		Route::GET('{ware}/info/add','WareController@infoadd');
-
+		Route::POST('{ware}/info/add','WareController@infoinsert');
+		Route::POST('{ware}/info','WareController@infupdate');
+		Route::DELETE('{ware}/info','WareController@infodel');
 
 
 	});

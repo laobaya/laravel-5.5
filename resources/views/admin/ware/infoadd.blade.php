@@ -26,37 +26,40 @@
         <form class="layui-form">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <div class="layui-form-item">
-              <label for="name" class="layui-form-label">
-                  <span class="x-red">*</span>操作名
+              <label for="order_number" class="layui-form-label">
+                  <span class="x-red">*</span>单号
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="name" name="name" required="" lay-verify="required"
+                  <input type="text" id="order_number" name="order_number" required="" lay-verify="required"
                   autocomplete="off" class="layui-input">
               </div>
           </div>
           
+                   
           <div class="layui-form-item">
-              <label for="phone" class="layui-form-label">
-                  <span class="x-red">*</span>手机号
+              <label for="product_id" class="layui-form-label">
+                  <span class="x-red">*</span>产品
               </label>
               <div class="layui-input-inline">
-                  <input type="text" name="phone" required="" lay-verify="phone"
-                  autocomplete="off" class="layui-input">
-              </div>
-          </div>
-          
-          <div class="layui-form-item">
-              <label for="username" class="layui-form-label">
-                  <span class="x-red">*</span>类型
-              </label>
-              <div class="layui-input-inline">
-                  <select id="type" name="type" class="valid">
-                    <option value="0">入库</option>
-                    <option value="1">出库</option>
-                    <option value="-1">报废</option>
+                  <select id="type" name="product_id" class="valid">
+                    <option value="1">胶原蛋白</option>
+                    <option value="2">蜂蜜</option>
+                    <option value="3">痔疮</option>
                   </select>
               </div>
           </div>
+
+          <div class="layui-form-item">
+              <label for="number" class="layui-form-label">
+                  <span class="x-red">*</span>数量
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" name="number" required=""
+                  autocomplete="off" class="layui-input">
+              </div>
+          </div>
+
+
           <div class="layui-form-item layui-form-text">
               <label for="remark" class="layui-form-label">
                   备注
