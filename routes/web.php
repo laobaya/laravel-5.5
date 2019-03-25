@@ -60,12 +60,15 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
 		Route::GET('{ware}/edit','WareController@edit');
 		Route::POST('{ware}/edit','WareController@update');
 		Route::DELETE('{ware}', 'WareController@del');
+
 		//详情
 		Route::GET('{ware}/info','WareController@info');
 		Route::GET('{ware}/info/add','WareController@infoadd');
 		Route::POST('{ware}/info/add','WareController@infoinsert');
-		Route::POST('{ware}/info','WareController@infupdate');
+		Route::POST('{ware}/info','WareController@infoupdate');
 		Route::DELETE('{ware}/info','WareController@infodel');
+
+		Route::GET('info','WareController@infolist');
 
 
 	});

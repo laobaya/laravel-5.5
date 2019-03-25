@@ -82,17 +82,16 @@ class Ware extends Model
         // 获取查询的条数
         $limit = isset($data['limit']) ? $data['limit'] : 10;
 
-        $ware = $this->wareInfo()->paginate($limit);
+        $ware = $this->wareInfo()->paginate($limit)->toArray();
         
         if(!empty($ware)){
-            $result = array(
-                'code'=>0,
-                'msg'=>'获取成功',
-                'data'=>$ware->items(),
-                'count'=>$ware->total()
-            );
+
+            $result = ['code'=>0,'msg'=>'获取成功','data'=>$ware['data'],'count'=>$ware['total']];
+            
         }else{
-            $result = array('code'=>1,'msg'=>'获取失败');
+
+            $result = ['code'=>1,'msg'=>'获取失败'];
+
         }
         // dd($result['data'][0]->product);
         return $result;
@@ -126,6 +125,30 @@ class Ware extends Model
             $result = array('res'=>1,'msg'=>'删除失败');
         }
         return $result;
+    }
+
+    public function wareInfolist($data){
+
+        // 获取查询的条数
+        $limit = isset($data['limit']) ? $data['limit'] : 10;
+
+        // $ware = $this->wareInfo()->paginate($limit);
+        $ware = Ware::has('wareInfo')->paginate($limit)->toArray();
+
+        dump($ware);
+        if(!empty($ware)){
+            $result = array(
+                'code'=>0,
+                'msg'=>'获取成功',
+                'data'=>$ware->items(),
+                'count'=>$ware->total()
+            );
+        }else{
+            $result = array('code'=>1,'msg'=>'获取失败');
+        }
+        // dd($result['data'][0]->product);
+        return $result;
+
     }
 
     //绑定对应的订单详情

@@ -14,7 +14,7 @@ class WareController extends CommonController
 
 		$this->request = $request;
 		$this->CM = 'ware';//声明控制器模板路径
-		$this->PathArr = ['index'=>'index','add'=>'add','info'=>'info','edit'=>'edit','infoadd'=>'infoadd'];//声明访问文件
+		$this->PathArr = ['index'=>'index','add'=>'add','info'=>'info','edit'=>'edit','infoadd'=>'infoadd','infolist'=>'info'];//声明访问文件
 		$this->model = $ware;//加载model类
 
 	}
@@ -104,6 +104,23 @@ class WareController extends CommonController
 		$result = $ware->wareInfodel($data);
         return $result;
 
+	}
+
+	public function infoupdate(Ware $ware){
+		dd(1);
+	}
+
+	public function infolist(){
+
+		$is_data = $this->request->input('data');
+		//判断是否是调用数据
+		if($is_data){
+			$data = $this->request->input();
+			$result = $this->model->wareInfolist($data);
+			return $result;
+		}
+
+		return self::loadView();
 	}
 
 }
