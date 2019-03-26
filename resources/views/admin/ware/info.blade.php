@@ -45,14 +45,14 @@
         <thead>
 
           <tr>
-            <th lay-data="{type:'checkbox',fixed: 'left'}">ID</th>
-            <th lay-data="{field:'id', width:80, sort: true}">ID</th>
-            <th lay-data="{field:'product', minWidth: 100}">产品</th>
-            <th lay-data="{field:'created_at', width:160, sort: true}">创建时间</th>
-            <th lay-data="{field:'order_number', edit: 'text', minWidth: 150}">单号</th>
-            <th lay-data="{field:'state', width:150, templet:'#switchTpl'}">状态</th>
-            <th lay-data="{field:'number', edit: 'int', minWidth: 100}">数量</th>
-            <th lay-data="{field:'remark', edit: 'text'}">备注</th>
+            <th lay-data="{type:'checkbox',fixed:'left'}">ID</th>
+            <th lay-data="{field:'id',sort:true}">ID</th>
+            <th lay-data="{field:'product'}">产品</th>
+            <th lay-data="{field:'created_at',  sort: true}">创建时间</th>
+            <th lay-data="{field:'order_number', edit: 'text'}">单号</th>
+            <th lay-data="{field:'state', templet:'#switchTpl'}">审核状态</th>
+            <th lay-data="{field:'number', edit: 'int'}">数量</th>
+            <th lay-data="{field:'remark'}">备注</th>
             <th lay-data="{fixed: 'right',width:200, align:'center', toolbar: '#barTpl'}">操作</th>
           </tr>
         </thead>
@@ -70,7 +70,7 @@
     </script>
     <script type="text/html" id="switchTpl">
       <!-- 设置状态模板 -->
-      <input type="checkbox" name="state" value="@{{d.state}}" lay-skin="switch" lay-text="审核通过|审核中" lay-filter="stateDemo" data-json="@{{ encodeURIComponent(JSON.stringify(d)) }}" @{{ d.state == 0 ? 'checked' : '' }}>
+      <input type="checkbox" name="state" value="@{{d.state}}" lay-skin="switch" lay-text="是|否" lay-filter="stateDemo" data-id="@{{ d.id }}" @{{ d.state == 0 ? 'checked' : '' }}>
     </script>
 
     <script type="text/html" id="barTpl">
@@ -125,14 +125,29 @@
           break;
           case 'delall'://删除
             var data = checkStatus.data;
-            console.log(data);
-            return false;              
-            $.post(' ',{'id':data[0].id,'_token':"{{ csrf_token() }}",'_method':'DELETE'},function(msg){
-                // console.log(m);
-                if(msg.res == 1){
-                  
+            var id = '';  
+            var dataLen = data.length;
+            data.forEach(function(element,index){
+                if(++index == dataLen){
+                 id += element.id;  
+                }else{
+                 id += element.id+',';  
                 }
-                layer.msg(msg.msg);
+             }); 
+            
+            $.post('info/alldel',{'id':id,'_token':"{{ csrf_token() }}"},function(data){
+                // console.log(m);
+                layer.msg(data.msg);
+
+                if(data.res == 0){
+
+                  table.reload('test', {
+                    url: 'info?data=true'
+                    ,where: {} //设定异步数据接口的额外参数
+                    //,height: 300
+                  });
+                }
+                layer.msg(data.msg);
             });
             
           break;
@@ -161,7 +176,7 @@
             layer.confirm('真的删除行么', function(index){
               $.post(' ',{'id':data.id,'_token':"{{ csrf_token() }}",'_method':'DELETE'},function(msg){
                   // console.log(m);
-                  if(msg.res == 1){
+                  if(msg.res == 0){
                     obj.del();
                     layer.close(index);
                   }
@@ -172,12 +187,18 @@
           case 'edit':
             layer.prompt({
               formType: 2
-              ,value: data,
-            }, function(value, index){
-              obj.update({
-                
+              ,title:'备注'
+              ,value: data.remark,
+            }, function(value,index){
+              data.remark = value;
+              $.post('',{'id':data.id,'data':data,'_token':"{{csrf_token()}}"},function(data){
+                if(data.res == 0){
+                  obj.update(data);
+                  layer.close(index);
+                }
+                layer.msg(data.msg);
               });
-              layer.close(index);
+
           });
           break;
         }
@@ -187,7 +208,14 @@
       // 复选框事件
       form.on('switch(stateDemo)', function(obj){
         // 切换状态
-        
+        var id = $(this).attr('data-id');
+
+        $.post('',{'id':id,'val':obj.value,'_token':"{{csrf_token()}}",'_method':'PUT'},function(data){
+              if(data.res == 0){
+                $(this).attr('value',data.val);
+              }
+              layer.msg(data.msg);
+        })
       });
 
     });

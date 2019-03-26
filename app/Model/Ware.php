@@ -113,12 +113,12 @@ class Ware extends Model
 
     }
 
-    public function wareInfodel($data){
+    public function wareInfodel($id){
 
-        $id = (int)$data['id'];
+        $id = is_array($id) ? $id : ( is_string($id) ?explode (',',$id) :func_get_args());
 
-        $res = $this->wareInfo()->where('id',$id)->delete();
-            
+        $res = $this->wareInfo()->whereIn('id',$id)->delete();
+        
         if($res){
             $result = array('res'=>0,'msg'=>'删除成功');
         }else{
@@ -131,11 +131,9 @@ class Ware extends Model
 
         // 获取查询的条数
         $limit = isset($data['limit']) ? $data['limit'] : 10;
-
-        // $ware = $this->wareInfo()->paginate($limit);
         $ware = Ware::has('wareInfo')->paginate($limit)->toArray();
 
-        dump($ware);
+        // dump($ware);
         if(!empty($ware)){
             $result = array(
                 'code'=>0,
@@ -146,9 +144,19 @@ class Ware extends Model
         }else{
             $result = array('code'=>1,'msg'=>'获取失败');
         }
-        // dd($result['data'][0]->product);
         return $result;
 
+    }
+
+    public function wareInfoupdate($id,$data=[]){
+
+        $res = $this->wareInfo()->where('id',$id)->update($data);
+        if($res){
+            $result = array('res'=>0,'msg'=>'更新成功');
+        }else{
+            $result = array('res'=>1,'msg'=>'更新失败');
+        }
+        return $result;
     }
 
     //绑定对应的订单详情

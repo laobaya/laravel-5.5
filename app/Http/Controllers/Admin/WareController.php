@@ -101,14 +101,48 @@ class WareController extends CommonController
 	public function infodel(Ware $ware){
 
 		$data = $this->request->except(['_token','_method']);
-		$result = $ware->wareInfodel($data);
+		$result = $ware->wareInfodel($data['id']);
         return $result;
 
 	}
 
 	public function infoupdate(Ware $ware){
-		dd(1);
+
+		$data = $this->request->except(['_token']);
+		// 判断执行类型
+		$id = $data['id'];
+		$is_return = false;
+		if($this->request->input('_method') == 'PUT'){
+			$val = $data['val'] == 0 ? 1 : 0;
+			$arr = ['state'=>$val];
+			$is_return = true;
+		}else{
+			$arr['order_number'] = $data['data']['order_number'];
+			$arr['number'] = $data['data']['number'];
+			$arr['remark'] = $data['data']['remark'];
+		}
+
+		$result = $ware->wareInfoupdate($id,$arr);
+		// 加入返回值
+		if($is_return){
+			$result['val'] = $val;
+		}
+		return $result;
+
 	}
+
+	public function infoalldel(Ware $ware){
+
+		$data = $this->request->except(['_token']);
+		// 判断执行类型
+		$id = $data['id'];
+		
+		$result = $ware->wareInfodel($id);
+
+		return $result;
+
+	}
+
 
 	public function infolist(){
 

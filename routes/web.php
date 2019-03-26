@@ -67,6 +67,8 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
 		Route::POST('{ware}/info/add','WareController@infoinsert');
 		Route::POST('{ware}/info','WareController@infoupdate');
 		Route::DELETE('{ware}/info','WareController@infodel');
+		Route::PUT('{ware}/info','WareController@infoupdate');
+		Route::POST('{ware}/info/alldel','WareController@infoalldel');
 
 		Route::GET('info','WareController@infolist');
 
