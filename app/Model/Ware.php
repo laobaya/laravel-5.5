@@ -12,6 +12,13 @@ class Ware extends Model
     public $timestamps = true;
     protected $table = 'warehouse';//设置表名
     protected $primaryKey = 'id'; //主键
+    protected $fillable = [
+        'name',
+        'phone',
+        'u_id',
+        'ua_id',
+        'remark',
+    ];//插入字段
     protected $dates = ['deleted_at'];
 
 
@@ -29,7 +36,8 @@ class Ware extends Model
     public function wareInsert($data){
 
         $data['u_id'] = 1;
-        $res = $this->insert($data);
+        // dump($data);
+        $res = self::create($data);
 
         //判断是否成功插入
         if($res){
@@ -164,6 +172,25 @@ class Ware extends Model
     {
         return $this->hasMany('App\Model\WareInfo');
     }
+
+    // 获取类型
+    public function getTypeNameAttribute()
+    {
+
+        $arr = ['入库','出库',-1=>'报废'];
+        return $arr[$this['type']];
+    }
+    // 获取状态
+    /*public function getStateNameAttribute(){
+
+    }
+*/
+
+    // 获取创建用户
+    public function getUserAttribute(){
+        return $this->hasOne('App\User','id','u_id')->first()['name'];
+    }
+
 
 
 }

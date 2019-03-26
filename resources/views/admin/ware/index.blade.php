@@ -98,9 +98,9 @@
             <td>{{$v['id']}}</td>
             <td>{{$v['name']}}</td>
             <td>{{$v['phone']}}</td>
-            <td>{{$v['u_id']}}</td>
+            <td>{{$v['user']}}</td>
             <td>{{$v['state']}}</td>
-            <td>{{$v['type']}}</td>
+            <td>{{$v['type_name']}}</td>
             <td>{{$v['created_at']}}</td>
             <td>{{$v['remark']}}</td>
             <td class="td-manage">
