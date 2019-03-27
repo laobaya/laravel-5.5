@@ -38,29 +38,31 @@
           <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
           <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
           <div class="layui-input-inline">
-            <select name="product_id">
-              <option value="">产品类型</option>
-              <option value='1'>胶原蛋白</option>
-              <option value='2'>痔疮</option>
-              <option value='3'>蜂蜜</option>
+            <select name="type">
+              <option value="">类型</option>
+              <option value='-1'>报废</option>
+              <option value='0'>入库</option>
+              <option value='1'>出库</option>
             </select>
           </div>
+          <input type="text" name="phone"  placeholder="请输入手机号" autocomplete="off" class="layui-input">
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
-      <table class="layui-table" lay-data="{url:'./info?data=true',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="testDemo">
+      <table class="layui-table" lay-data="{url:'./ware?data=true',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="testDemo">
         <thead>
 
           <tr>
             <th lay-data="{type:'checkbox',fixed:'left'}">ID</th>
             <th lay-data="{field:'id',sort:true}">ID</th>
-            <th lay-data="{field:'product'}">产品</th>
+            <th lay-data="{field:'name'}">操作名</th>
+            <th lay-data="{field:'user'}">创建管理员</th>
+            <th lay-data="{field:'phone', edit: 'text'}">手机号</th>
             <th lay-data="{field:'created_at',  sort: true}">创建时间</th>
-            <th lay-data="{field:'order_number', edit: 'text'}">单号</th>
             <th lay-data="{field:'state', templet:'#switchTpl'}">审核状态</th>
-            <th lay-data="{field:'number', edit: 'int'}">数量</th>
+            <th lay-data="{field:'type_name'}">类型</th>
             <th lay-data="{field:'remark'}">备注</th>
-            <th lay-data="{fixed: 'right',width:200, align:'center', toolbar: '#barTpl'}">操作</th>
+            <th lay-data="{fixed: 'right',width:220, align:'center', toolbar: '#barTpl'}">操作</th>
           </tr>
         </thead>
       </table>
@@ -80,6 +82,7 @@
 
     <script type="text/html" id="barTpl">
       <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+      <a class="layui-btn layui-btn-normal" lay-event="show">查看详情</a>
       <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 
@@ -118,7 +121,7 @@
       // 定义重载页面方法
       function reloadView(where=''){
         table.reload('test', {
-            url: 'info?data=true'
+            url: 'ware?data=true'
             ,where: {where} //设定异步数据接口的额外参数
           });
       }
@@ -149,13 +152,13 @@
               type: 2, 
               skin: 'layui-layer-rim', //加上边框
               area: ['600px','600px'], //宽高
-              content: 'info/add'
+              content: 'ware/add'
             });
           break;
           case 'delall'://删除
             var ids = extractId(data,dataLen);
             
-            $.post('info/alldel',{'id':ids,'_token':"{{ csrf_token() }}"},function(data){
+            $.post('ware/alldel',{'id':ids,'_token':"{{ csrf_token() }}"},function(data){
                 // console.log(m);
                 layer.msg(data.msg);
 
@@ -169,7 +172,7 @@
           case 'tongall'://删除
             
             var ids = extractId(data,dataLen);
-            $.post('info/alltong',{'id':ids,'_token':"{{ csrf_token() }}"},function(data){
+            $.post('ware/alltong',{'id':ids,'_token':"{{ csrf_token() }}"},function(data){
                 // console.log(m);
                 layer.msg(data.msg);
 
@@ -219,6 +222,9 @@
               });
 
           });
+          break;
+          case 'show':
+            x_admin_show('查看详情','ware/'+data.id+'/info')
           break;
         }
         

@@ -28,6 +28,12 @@
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>仓库列表</cite>
                         </a>
+                    </li>
+                    <li date-refresh="1">
+                        <a _href="ware/info">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>所有详情</cite>
+                        </a>
                     </li> 
                 </ul>
             </li>

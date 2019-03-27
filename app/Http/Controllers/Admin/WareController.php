@@ -14,7 +14,7 @@ class WareController extends CommonController
 
 		$this->request = $request;
 		$this->CM = 'ware';//声明控制器模板路径
-		$this->PathArr = ['index'=>'index','add'=>'add','info'=>'info','edit'=>'edit','infoadd'=>'infoadd','infolist'=>'info'];//声明访问文件
+		$this->PathArr = ['index'=>'1index','add'=>'add','info'=>'info','edit'=>'edit','infoadd'=>'infoadd'];//声明访问文件
 		$this->model = $ware;//加载model类
 
 	}
@@ -22,10 +22,21 @@ class WareController extends CommonController
 	//加载后台首页
 	public function index(){
 
-		$data = $this->request->except(['_token']);
+		$is_data = $this->request->input('data');
+		//判断是否是调用数据
+		if($is_data){
+
+			$data = $this->request->input();
+			$result = $this->model->wareIndex($data);
+			return $result;
+		}
+
+		return self::loadView();
+
+		/*$data = $this->request->except(['_token']);
 		$toload = $this->model->wareIndex($data);
 		// dump($toload);
-		return self::loadView($toload);
+		return self::loadView($toload);*/
 
 	}
 
@@ -44,28 +55,67 @@ class WareController extends CommonController
         return $result;
 	}
 
-
-	public function edit(Ware $ware){
+	//改版1.0
+	/*public function edit(Ware $ware){
 
 		$toload = $ware->wareEdit();
 		// dump($toload);
 		return self::loadView($toload);
-	}
+	}*/
 
-	public function update(Ware $ware){
+	//结束改版1.0
 
-		$data = $this->request->except(['_token','_method']);
+	public function update(){
+
+
+		/*$data = $this->request->except(['_token','_method']);
    		$result = $ware->wareUpdate($data);
-        return $result;
+        return $result;*/
+
+        $data = $this->request->except(['_token']);
+        // dd($data);
+		// 判断执行类型
+		$id = $data['id'];
+		$is_return = false;
+		if($this->request->input('_method') == 'PUT'){
+			$val = $data['val'] == 0 ? 1 : 0;
+			$arr = ['state'=>$val];
+			$is_return = true;
+		}else{
+			$arr['phone'] = $data['data']['phone'];
+			$arr['remark'] = $data['data']['remark'];
+		}
+
+		$result = $this->model->wareUpdate($id,$arr);
+		// 加入返回值
+		if($is_return){
+			$result['val'] = $val;
+		}
+		return $result;
 
 	}
 
-	public function del(Ware $ware){
+	public function del(){
 		// dump($ware);
-		$result = $ware->wareDel();
+		$data = $this->request->except(['_token']);
+		// 判断执行类型
+		$id = $data['id'];
+		
+		$result = $this->model->wareDel($id);
    		return $result;
 	}
 
+	public function alltong(){
+
+		$data = $this->request->except(['_token']);
+		// 判断执行类型
+		$id = $data['id'];
+		
+		$result = $this->model->waretong($id);
+
+		return $result;
+
+	}
 
 	//查看详情
 	public function info(Ware $ware){
@@ -142,19 +192,19 @@ class WareController extends CommonController
 		return $result;
 
 	}
+	public function infoalltong(Ware $ware){
 
+		$data = $this->request->except(['_token']);
+		// 判断执行类型
+		$id = $data['id'];
+		
+		$result = $ware->wareInfotong($id);
 
-	public function infolist(){
+		return $result;
 
-		$is_data = $this->request->input('data');
-		//判断是否是调用数据
-		if($is_data){
-			$data = $this->request->input();
-			$result = $this->model->wareInfolist($data);
-			return $result;
-		}
-
-		return self::loadView();
 	}
+
+
+	
 
 }

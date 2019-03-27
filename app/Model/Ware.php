@@ -18,26 +18,64 @@ class Ware extends Model
         'u_id',
         'ua_id',
         'remark',
+        'type'
     ];//插入字段
-    protected $dates = ['deleted_at'];
+    protected $hidden = [
+        'deleted_at',
+        'u_id',
+        'ua_id'
+
+    ];//隐藏指定字段
+    protected $appends = [
+        'user',
+        'type_name'
+    ];//查询压入字段
+    protected $dates = ['deleted_at'];//软删除
 
 
     //首页
-    public function wareIndex($request){
+    public function wareIndex($data){
         
-        $ware = $this->paginate(10);
+        $start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-01');
+        $end = isset($data['where']['end']) ? $data['where']['end'] : date('Y-m-t');
+        $type = isset($data['where']['type']) ? $data['where']['type'] : '';
+        $phone = isset($data['where']['phone']) ? $data['where']['phone'] : '';
+
+        $limit = isset($data['limit']) ? $data['limit'] : 10;
+
+        $ware = $this->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
+        ->when($type,function($query) use ($type){
+             $query->where('type',$type);
+        })
+        ->when($phone,function($query) use ($phone){
+             $query->where('phone',$phone);
+        })
+        ->paginate($limit)->toArray();
+        
+        if(!empty($ware)){
+
+            $result = ['code'=>0,'msg'=>'获取成功','data'=>$ware['data'],'count'=>$ware['total']];
+            
+        }else{
+
+            $result = ['code'=>1,'msg'=>'获取失败'];
+
+        }
+        // dd($result['data'][0]->product);
+        return $result;
+
+        /*$ware = $this->paginate(10);
         $toload = array(
             'ware'=>$ware
         );
-        return $toload;
+        return $toload;*/
     }    
 
     //插入数据
     public function wareInsert($data){
 
         $data['u_id'] = 1;
-        // dump($data);
-        $res = self::create($data);
+        $res = $this->create($data);
 
         //判断是否成功插入
         if($res){
@@ -59,14 +97,14 @@ class Ware extends Model
         return $toload;
     }
 
-    public function wareUpdate($data){
+    public function wareUpdate($id,$data=[]){
 
         // dump($data);
-        $res = $this->where('id',$this['id'])->update($data);
+        $res = $this->where('id',$id)->update($data);
         if($res){
-            $result = array('res'=>0,'msg'=>'修改成功');
+            $result = array('res'=>0,'msg'=>'更新成功');
         }else{
-            $result = array('res'=>1,'msg'=>'修改失败');
+            $result = array('res'=>1,'msg'=>'更新失败');
         }
         return $result;
     }
@@ -74,9 +112,12 @@ class Ware extends Model
     public function wareDel(){
 
         // dd($this['id']);
-        $res = $this->destroy($this['id']);
-            
+        $id = is_array($id) ? $id : ( is_string($id) ?explode (',',$id) :func_get_args());
+
+        $res = $this->whereIn('id',$id)->delete();
+        
         if($res){
+            $this->wareInfo()->whereIn('ware_id',$id)->delete();
             $result = array('res'=>0,'msg'=>'删除成功');
         }else{
             $result = array('res'=>1,'msg'=>'删除失败');
@@ -88,9 +129,36 @@ class Ware extends Model
     public function wareInfoindex($data){
 
         // 获取查询的条数
+        /*$limit = isset($data['limit']) ? $data['limit'] : 10;
+
+        $ware = $this->wareInfo()->paginate($limit)->toArray();*/
+
+        $start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-01');
+        $end = isset($data['where']['end']) ? $data['where']['end'] : date('Y-m-t');
+
+        /*$start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-d');
+        $end = isset($data['where']['end']) ? $data['where']['end'] : date('Y-m-d');*/
+        $product = isset($data['where']['product_id']) ? $data['where']['product_id'] : '';
+        
+
         $limit = isset($data['limit']) ? $data['limit'] : 10;
 
-        $ware = $this->wareInfo()->paginate($limit)->toArray();
+        $ware = $this->wareInfo()->when($product,function($query) use ($product){
+             $query->where('product_id',$product);
+        })->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
+        ->paginate($limit)->toArray();
+        
+        if(!empty($ware)){
+
+            $result = ['code'=>0,'msg'=>'获取成功','data'=>$ware['data'],'count'=>$ware['total']];
+            
+        }else{
+
+            $result = ['code'=>1,'msg'=>'获取失败'];
+
+        }
+        // dd($result['data'][0]->product);
+        return $result;
         
         if(!empty($ware)){
 
@@ -131,6 +199,32 @@ class Ware extends Model
             $result = array('res'=>0,'msg'=>'删除成功');
         }else{
             $result = array('res'=>1,'msg'=>'删除失败');
+        }
+        return $result;
+    }
+
+    public function waretong($id){
+        $id = is_array($id) ? $id : ( is_string($id) ?explode (',',$id) :func_get_args());
+
+        $res = $this->whereIn('id',$id)->update(['state'=>0]);
+        
+        if($res){
+            $result = array('res'=>0,'msg'=>'执行成功');
+        }else{
+            $result = array('res'=>1,'msg'=>'执行失败');
+        }
+        return $result;
+    }
+
+    public function wareInfotong($id){
+        $id = is_array($id) ? $id : ( is_string($id) ?explode (',',$id) :func_get_args());
+
+        $res = $this->wareInfo()->whereIn('id',$id)->update(['state'=>0]);
+        
+        if($res){
+            $result = array('res'=>0,'msg'=>'执行成功');
+        }else{
+            $result = array('res'=>1,'msg'=>'执行失败');
         }
         return $result;
     }
@@ -180,17 +274,23 @@ class Ware extends Model
         $arr = ['入库','出库',-1=>'报废'];
         return $arr[$this['type']];
     }
-    // 获取状态
-    /*public function getStateNameAttribute(){
-
-    }
-*/
+    
 
     // 获取创建用户
     public function getUserAttribute(){
         return $this->hasOne('App\User','id','u_id')->first()['name'];
     }
 
+    /*public function when($value, $callback, $default = null)
+    {
+        if ($value) {
+            return $callback($this, $value) ?: $this;
+        } elseif ($default) {
+            return $default($this, $value) ?: $this;
+        }
+
+        return $this;
+    }*/
 
 
 }

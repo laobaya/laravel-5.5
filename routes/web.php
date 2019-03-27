@@ -55,11 +55,17 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
 	Route::group(['prefix'=>'ware','middleware'=>[]],function(){
 
 		Route::GET('/','WareController@index');
+		Route::PUT('/','WareController@update');
+		Route::POST('/','WareController@update');
 		Route::GET('add','WareController@add');
 		Route::POST('add','WareController@insert');
-		Route::GET('{ware}/edit','WareController@edit');
+		Route::POST('alldel','WareController@del');
+		Route::POST('alltong','WareController@alltong');
+		Route::DELETE('/', 'WareController@del');
+
+		/*Route::GET('{ware}/edit','WareController@edit');
 		Route::POST('{ware}/edit','WareController@update');
-		Route::DELETE('{ware}', 'WareController@del');
+		Route::DELETE('{ware}', 'WareController@del');*/
 
 		//详情
 		Route::GET('{ware}/info','WareController@info');
@@ -68,10 +74,19 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
 		Route::POST('{ware}/info','WareController@infoupdate');
 		Route::DELETE('{ware}/info','WareController@infodel');
 		Route::PUT('{ware}/info','WareController@infoupdate');
+
 		Route::POST('{ware}/info/alldel','WareController@infoalldel');
+		Route::POST('{ware}/info/alltong','WareController@infoalltong');
 
-		Route::GET('info','WareController@infolist');
+		// 列表页
+		Route::GET('info','WareInfoController@index');
+		Route::POST('info','WareInfoController@update');
+		Route::PUT('info','WareInfoController@update');
+		Route::GET('info/add','WareInfoController@add');
+		Route::POST('info/alldel','WareInfoController@infoalldel');
 
+		Route::POST('info/alltong','WareInfoController@infoalltong');
+		Route::DELETE('{ware}/info','WareInfoController@infodel');
 
 	});
 
