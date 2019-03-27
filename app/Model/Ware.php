@@ -31,20 +31,24 @@ class Ware extends Model
         'type_name'
     ];//查询压入字段
     protected $dates = ['deleted_at'];//软删除
-
+    protected $arr = ['入库','出库',-1=>'报废'];
 
     //首页
     public function wareIndex($data){
         
         $start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-01');
         $end = isset($data['where']['end']) ? $data['where']['end'] : date('Y-m-t');
-        $type = isset($data['where']['type']) ? $data['where']['type'] : '';
-        $phone = isset($data['where']['phone']) ? $data['where']['phone'] : '';
-
+        $type = NULL;
+        $phone = NULL;
+        if(isset($data['where'])){
+            $type = (!is_null($data['where']['type'])) ? $data['where']['type'] : '';
+            $phone = isset($data['where']['phone']) ? $data['where']['phone'] : '';
+        }
+        
         $limit = isset($data['limit']) ? $data['limit'] : 10;
 
         $ware = $this->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
-        ->when($type,function($query) use ($type){
+        ->when($type != null,function($query) use ($type){
              $query->where('type',$type);
         })
         ->when($phone,function($query) use ($phone){
@@ -271,7 +275,7 @@ class Ware extends Model
     public function getTypeNameAttribute()
     {
 
-        $arr = ['入库','出库',-1=>'报废'];
+        
         return $arr[$this['type']];
     }
     
