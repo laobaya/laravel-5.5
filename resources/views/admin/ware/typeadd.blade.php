@@ -26,50 +26,27 @@
         <form class="layui-form">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <div class="layui-form-item">
-              <label for="order_number" class="layui-form-label">
-                  <span class="x-red">*</span>单号
+              <label for="name" class="layui-form-label">
+                  <span class="x-red">*</span>类型名
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="order_number" name="order_number" required="" lay-verify="required"
+                  <input type="text" id="name" name="name" required="" lay-verify="required"
                   autocomplete="off" class="layui-input">
               </div>
           </div>
           
-                   
           <div class="layui-form-item">
-              <label for="product_id" class="layui-form-label">
-                  <span class="x-red">*</span>产品
+              <label for="username" class="layui-form-label">
+                  <span class="x-red">*</span>运算类型
               </label>
               <div class="layui-input-inline">
-              @php($productname = \App\Model\Product::select('id','name')->get())
-
-                  <select id="type" name="product_id" class="valid">
-                    @foreach($productname as $v)
-                      <option value="{{$v['id']}}">{{$v['name']}}</option>
-                    @endforeach
+                  <select id="type" name="operation" class="valid">
+                    <option value="+">增</option>
+                    <option value="-">减</option>
                   </select>
               </div>
           </div>
-
-          <div class="layui-form-item">
-              <label for="number" class="layui-form-label">
-                  <span class="x-red">*</span>数量
-              </label>
-              <div class="layui-input-inline">
-                  <input type="text" name="number" required=""
-                  autocomplete="off" class="layui-input">
-              </div>
-          </div>
-
-
-          <div class="layui-form-item layui-form-text">
-              <label for="remark" class="layui-form-label">
-                  备注
-              </label>
-              <div class="layui-input-block">
-                  <textarea placeholder="请输入内容" id="desc" name="remark" class="layui-textarea"></textarea>
-              </div>
-          </div>
+          
           <div class="layui-form-item">
               <label for="L_repass" class="layui-form-label">
               </label>

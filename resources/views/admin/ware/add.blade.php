@@ -50,10 +50,12 @@
                   <span class="x-red">*</span>类型
               </label>
               <div class="layui-input-inline">
+                @php($typename = \App\Model\WareOperation::select('id','name')->get())
+            
                   <select id="type" name="type" class="valid">
-                    <option value="0">入库</option>
-                    <option value="1">出库</option>
-                    <option value="-1">报废</option>
+                    @foreach($typename as $v)
+                    <option value="{{$v['id']}}">{{$v['name']}}</option>
+                    @endforeach
                   </select>
               </div>
           </div>

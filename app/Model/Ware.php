@@ -27,11 +27,8 @@ class Ware extends Model
 
     ];//隐藏指定字段
     protected $appends = [
-        'user',
-        'type_name'
     ];//查询压入字段
     protected $dates = ['deleted_at'];//软删除
-    protected $arr = ['入库','出库',-1=>'报废'];
 
     //首页
     public function wareIndex($data){
@@ -47,7 +44,7 @@ class Ware extends Model
         
         $limit = isset($data['limit']) ? $data['limit'] : 10;
 
-        $ware = $this->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
+        $ware = $this->orderBy('created_at','DESC')->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
         ->when($type != null,function($query) use ($type){
              $query->where('type',$type);
         })
@@ -147,7 +144,7 @@ class Ware extends Model
 
         $limit = isset($data['limit']) ? $data['limit'] : 10;
 
-        $ware = $this->wareInfo()->when($product,function($query) use ($product){
+        $ware = $this->wareInfo()->orderBy('created_at','DESC')->when($product,function($query) use ($product){
              $query->where('product_id',$product);
         })->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
         ->paginate($limit)->toArray();
@@ -232,8 +229,8 @@ class Ware extends Model
         }
         return $result;
     }
-
-    public function wareInfolist($data){
+    //改版1.0
+    /*public function wareInfolist($data){
 
         // 获取查询的条数
         $limit = isset($data['limit']) ? $data['limit'] : 10;
@@ -252,7 +249,8 @@ class Ware extends Model
         }
         return $result;
 
-    }
+    }*/
+    //改版1.0
 
     public function wareInfoupdate($id,$data=[]){
 
@@ -275,8 +273,9 @@ class Ware extends Model
     public function getTypeNameAttribute()
     {
 
-        
-        return $arr[$this['type']];
+        return $this->hasOne('App\Model\WareOperation','id','type')->first()['name'];
+
+        // return $this->TYPENAME[$this['type']];
     }
     
 
@@ -295,6 +294,26 @@ class Ware extends Model
 
         return $this;
     }*/
+
+
+    public function kucun(){
+
+        $this->setappends([]);
+        $dd = $this->select(['id','type'])->get()->groupBy('type')->toArray();
+        
+        $arrData = [];
+
+        foreach ($dd as $k=> $val) {
+            foreach ($val as $value) {
+              // $arrData[$value['type']][$val] = $value['id'];
+                $arrData[$k][] = $value['id'];
+               
+            }
+            
+        }
+
+        dump($arrData);
+    }
 
 
 }

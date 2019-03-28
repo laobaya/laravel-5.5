@@ -38,14 +38,17 @@
           <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
           <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
           <div class="layui-input-inline">
+            @php($productname = \App\Model\Product::select('id','name')->get())
+
             <select name="product_id">
               <option value="">产品类型</option>
-              <option value='1'>胶原蛋白</option>
-              <option value='2'>痔疮</option>
-              <option value='3'>蜂蜜</option>
+              @foreach($productname as $v)
+              <option value="{{$v['id']}}">{{$v['name']}}</option>
+              @endforeach
             </select>
           </div>
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+          <div class="layui-btn" onclick="x_admin_show('添加类型','ware/product_add')"><i class="layui-icon"></i>添加类型</div>
         </form>
       </div>
       <table class="layui-table" lay-data="{url:'./info?data=true',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="testDemo">
@@ -210,12 +213,12 @@
               ,value: data.remark,
             }, function(value,index){
               data.remark = value;
-              $.post('',{'id':data.id,'data':data,'_token':"{{csrf_token()}}"},function(data){
-                if(data.res == 0){
+              $.post('',{'id':data.id,'data':data,'_token':"{{csrf_token()}}"},function(datas){
+                if(datas.res == 0){
                   obj.update(data);
                   layer.close(index);
                 }
-                layer.msg(data.msg);
+                layer.msg(datas.msg);
               });
 
           });

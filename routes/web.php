@@ -88,6 +88,18 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
 		Route::POST('info/alltong','WareInfoController@infoalltong');
 		Route::DELETE('{ware}/info','WareInfoController@infodel');
 
+
+		Route::GET('type_add','WareController@typeadd');
+		Route::POST('type_add','WareController@typeadd');
+		Route::GET('product_add','WareController@productadd');
+		Route::POST('product_add','WareController@product_add');
+		Route::GET('{ware}/ware/product_add','WareController@productadd');
+		Route::POST('{ware}/ware/product_add','WareController@product_add');
+
+
+
+		// 库存
+		Route::get('kucun','WareController@kucun');
 	});
 
 });

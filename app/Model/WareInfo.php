@@ -47,7 +47,7 @@ class WareInfo extends Model
 
         $limit = isset($data['limit']) ? $data['limit'] : 10;
         
-        $ware = self::when($product,function($query) use ($product){
+        $ware = $this->orderBy('created_at','DESC')->when($product,function($query) use ($product){
             
              $query->where('product_id',$product);
         })->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
@@ -109,9 +109,7 @@ class WareInfo extends Model
     // 获取产品名
 	public function getProductAttribute()
 	{
-
-		$arr = ['','胶原蛋白','痔疮','蜂蜜'];
-	    return $arr[$this['product_id']];
+        return $this->hasOne('App\Model\Product','id','product_id')->first()['name'];
 	}
 
 

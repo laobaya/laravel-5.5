@@ -38,16 +38,22 @@
           <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
           <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
           <div class="layui-input-inline">
+            @php($typename = \App\Model\WareOperation::select('id','name')->get())
+
             <select name="type">
               <option value="">类型</option>
-              <option value='-1'>报废</option>
-              <option value='0'>入库</option>
-              <option value='1'>出库</option>
+              
+              @foreach($typename as $v)
+              <option value="{{$v['id']}}">{{$v['name']}}</option>
+              @endforeach
+
             </select>
           </div>
           <input type="text" name="phone"  placeholder="请输入手机号" autocomplete="off" class="layui-input">
-          <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+          <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button><div class="layui-btn" onclick="x_admin_show('添加类型','ware/type_add')"><i class="layui-icon"></i>添加类型</div>
         </form>
+        <!-- 添加类型 -->
+
       </div>
       <table class="layui-table" lay-data="{url:'./ware?data=true',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="testDemo">
         <thead>
@@ -213,12 +219,12 @@
               ,value: data.remark,
             }, function(value,index){
               data.remark = value;
-              $.post('',{'id':data.id,'data':data,'_token':"{{csrf_token()}}"},function(data){
-                if(data.res == 0){
+              $.post('',{'id':data.id,'data':data,'_token':"{{csrf_token()}}"},function(datas){
+                if(datas.res == 0){
                   obj.update(data);
                   layer.close(index);
                 }
-                layer.msg(data.msg);
+                layer.msg(datas.msg);
               });
 
           });
