@@ -34,6 +34,12 @@
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>所有详情</cite>
                         </a>
+                    </li>
+                    <li date-refresh="1">
+                        <a _href="inventory">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>库存详情</cite>
+                        </a>
                     </li> 
                 </ul>
             </li>

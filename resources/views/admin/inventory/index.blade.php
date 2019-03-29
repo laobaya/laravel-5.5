@@ -61,11 +61,11 @@
           <tr>
             <th lay-data="{type:'checkbox',fixed:'left'}">ID</th>
             <th lay-data="{field:'id',sort:true}">ID</th>
-            <th lay-data="{field:'name',width:100}">操作名</th>
-            <th lay-data="{field:'user',width:90}">创建管理员</th>
+            <th lay-data="{field:'name'}">操作名</th>
+            <th lay-data="{field:'user'}">创建管理员</th>
             <th lay-data="{field:'phone', edit: 'text'}">手机号</th>
-            <th lay-data="{field:'created_at',sort: true,width:140}">创建时间</th>
-            <th lay-data="{field:'state',width:80,templet:'#switchTpl'}">审核状态</th>
+            <th lay-data="{field:'created_at',  sort: true}">创建时间</th>
+            <th lay-data="{field:'state', templet:'#switchTpl'}">审核状态</th>
             <th lay-data="{field:'type_name'}">类型</th>
             <th lay-data="{field:'remark'}">备注</th>
             <th lay-data="{fixed: 'right',width:220, align:'center', toolbar: '#barTpl'}">操作</th>

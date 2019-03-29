@@ -96,10 +96,14 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
 		Route::GET('{ware}/ware/product_add','WareController@productadd');
 		Route::POST('{ware}/ware/product_add','WareController@product_add');
 
-
-
-		// 库存
-		Route::get('kucun','WareController@kucun');
+		
 	});
+
+	Route::group(['prefix'=>'inventory','middleware'=>[]],function(){
+
+		Route::GET('/','InventoryController@index');
+
+	});
+
 
 });

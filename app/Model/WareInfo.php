@@ -27,7 +27,7 @@ class WareInfo extends Model
 
     ];//隐藏指定字段
  	protected $appends = [
- 		'product'
+ 		
  	];//查询压入字段
 
 
@@ -36,7 +36,7 @@ class WareInfo extends Model
 
         // 获取查询的条数
         // dump($data);
-        
+
         $start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-01');
         $end = isset($data['where']['end']) ? $data['where']['end'] : date('Y-m-t');
 
@@ -47,7 +47,7 @@ class WareInfo extends Model
 
         $limit = isset($data['limit']) ? $data['limit'] : 10;
         
-        $ware = $this->orderBy('created_at','DESC')->when($product,function($query) use ($product){
+        $ware = $this->setappends(['Product'])->orderBy('created_at','DESC')->when($product,function($query) use ($product){
             
              $query->where('product_id',$product);
         })->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)

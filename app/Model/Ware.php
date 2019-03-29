@@ -27,12 +27,14 @@ class Ware extends Model
 
     ];//隐藏指定字段
     protected $appends = [
+        
     ];//查询压入字段
     protected $dates = ['deleted_at'];//软删除
 
     //首页
     public function wareIndex($data){
         
+
         $start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-01');
         $end = isset($data['where']['end']) ? $data['where']['end'] : date('Y-m-t');
         $type = NULL;
@@ -44,7 +46,7 @@ class Ware extends Model
         
         $limit = isset($data['limit']) ? $data['limit'] : 10;
 
-        $ware = $this->orderBy('created_at','DESC')->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
+        $ware = $this->setappends(['user','type_name'])->orderBy('created_at','DESC')->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
         ->when($type != null,function($query) use ($type){
              $query->where('type',$type);
         })
@@ -144,7 +146,7 @@ class Ware extends Model
 
         $limit = isset($data['limit']) ? $data['limit'] : 10;
 
-        $ware = $this->wareInfo()->orderBy('created_at','DESC')->when($product,function($query) use ($product){
+        $ware = $this->wareInfo()->setappends(['product'])->orderBy('created_at','DESC')->when($product,function($query) use ($product){
              $query->where('product_id',$product);
         })->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
         ->paginate($limit)->toArray();
@@ -277,11 +279,18 @@ class Ware extends Model
 
         // return $this->TYPENAME[$this['type']];
     }
-    
+
+    //获取运算符
+    public function getOperationAttribute(){
+        return $this->hasOne('App\Model\WareOperation','id','type')->first()['operation'];
+    }
 
     // 获取创建用户
     public function getUserAttribute(){
+
+        
         return $this->hasOne('App\User','id','u_id')->first()['name'];
+
     }
 
     /*public function when($value, $callback, $default = null)
@@ -296,24 +305,30 @@ class Ware extends Model
     }*/
 
 
-    public function kucun(){
+    /*public function kucun(){
+       
 
-        $this->setappends([]);
-        $dd = $this->select(['id','type'])->get()->groupBy('type')->toArray();
+        $dd = $this->groupBy('date')->get([\DB::raw('DATE(created_at) as date'),\DB::raw('id')]);
+        // $dd = $this->where('state',0)->groupBy('type')->get(['id','type']);
         
-        $arrData = [];
+        dump($dd);
 
-        foreach ($dd as $k=> $val) {
-            foreach ($val as $value) {
-              // $arrData[$value['type']][$val] = $value['id'];
-                $arrData[$k][] = $value['id'];
-               
-            }
-            
+        $ids = $data = array();
+        foreach ($dd as $k => $value) {
+           $ids[$k] = array_map('array_shift', $value);
+           $data[$k] = self::wareInfos($ids[$k]);
         }
-
-        dump($arrData);
+        
+        // $ids = array_column($dd, 'id');
+        // dump($ids);
+        // dump($data);
     }
 
+    public function wareInfos($ids){
+
+        $ids = is_array($ids) ? $ids : ( is_string($ids) ?explode (',',$ids) :func_get_args());
+        $data = WareInfo::where('state',0)->whereIn('ware_id',$ids)->sum('number');
+        return $data;
+    }*/
 
 }
