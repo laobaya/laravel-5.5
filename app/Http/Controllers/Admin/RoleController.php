@@ -15,7 +15,7 @@ class RoleController extends CommonController
 
 		$this->request = $request;
 		$this->CM = 'role';//声明控制器模板路径
-		$this->PathArr = ['index'=>'index','add'=>'add','rule'=>'rule','ruleadd'=>'ruleadd','ruleedit'=>'ruleedit'];//声明访问文件
+		$this->PathArr = ['index'=>'index','add'=>'add','edit'=>'edit','rule'=>'rule','ruleadd'=>'ruleadd','ruleedit'=>'ruleedit'];//声明访问文件
 		$this->model = $role;//加载model类
 
 	}
@@ -44,6 +44,7 @@ class RoleController extends CommonController
 
   public function edit(Role $role){
     $toload =  $role->roleEdit();
+    // dump($toload);
     return self::loadView($toload);
   }
 

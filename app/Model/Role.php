@@ -65,12 +65,14 @@ class Role extends Model
 
         $rule = Rule::get();
         $menu = menu::where('pid',0)->get(['id','name']);
+        $ruleInfo = $this->roleInfo()->get();
         $toload = [
             'role'=>$this,
             'menu'=>$menu,
-            'rules'=>$rule
+            'rule_class'=>$rule,
+            'info'=>$ruleInfo
         ];
-        // dump($toload);
+        dump($toload);
         return $toload;
 
     }

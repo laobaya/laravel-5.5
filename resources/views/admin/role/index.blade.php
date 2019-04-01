@@ -90,7 +90,7 @@
                 <i class="layui-icon">&#xe62f;</i>
               </a>
               @endif
-              <a title="编辑"  onclick="x_admin_show('编辑','adminroleedit/{{$w['id']}}')" href="javascript:;">
+              <a title="编辑"  onclick="x_admin_show('编辑','role/{{$w['id']}}/edit')" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
               

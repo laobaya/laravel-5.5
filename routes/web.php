@@ -50,7 +50,7 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
 		Route::GET('add','RoleController@add');
 		Route::POST('add','RoleController@insert');
 		Route::GET('{role}/edit','RoleController@edit');
-		Route::GET('{role}/edit','RoleController@update');
+		Route::POST('{role}/edit','RoleController@update');
 		Route::POST('state','RoleController@state');
 
 
