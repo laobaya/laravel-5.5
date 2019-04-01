@@ -28,8 +28,8 @@ class Role extends Model
     public function roleadd(){
 
         $role = $this->get();
-        $rule = Rule::get();
-        $menu = menu::where('pid',0)->get();
+        $rule = Rule::get(['id','name']);
+        $menu = menu::where('pid',0)->get(['id','name']);
         $toload = array(
             'role'=>$role,
             'rule_class'=>$rule,
@@ -51,7 +51,27 @@ class Role extends Model
         dd();*/
         $res = $objId->roleInfo()->createMany($rule);
 
-        dump($res);
+        // dump($res);
+        if($res){
+            $result = array('res'=>0,'msg'=>'更新成功');
+        }else{
+            $result = array('res'=>1,'msg'=>'更新失败');
+        }
+        return $result;
+
+    }
+
+    public function roleEdit(){
+
+        $rule = Rule::get();
+        $menu = menu::where('pid',0)->get(['id','name']);
+        $toload = [
+            'role'=>$this,
+            'menu'=>$menu,
+            'rules'=>$rule
+        ];
+        // dump($toload);
+        return $toload;
 
     }
 

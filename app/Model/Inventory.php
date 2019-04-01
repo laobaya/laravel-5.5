@@ -12,7 +12,7 @@ class Inventory extends Model
 
         //获取库操作分类
        $ware = (new Ware)->setappends(['type_name','operation'])->get(['id','type'])->groupBy('type_name')->toArray();
-       // dump($ware);
+       // dump($ware);dd();
        $arrDate = []; 
 
        foreach ($ware as $key => $value) {

@@ -42,6 +42,14 @@ class RoleController extends CommonController
     return $result;
   }
 
+  public function edit(Role $role){
+    $toload =  $role->roleEdit();
+    return self::loadView($toload);
+  }
+
+  public function update(Role $role){
+
+  }
 
   public function state(){
 
