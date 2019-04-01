@@ -46,7 +46,10 @@ class Ware extends Model
         
         $limit = isset($data['limit']) ? $data['limit'] : 10;
 
-        $ware = $this->setappends(['user','type_name'])->orderBy('created_at','DESC')->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
+        $ware = $this->setappends(['user','type_name'])
+        ->orderBy('created_at','DESC')
+        ->whereDate('created_at','>=',$start)
+        ->whereDate('created_at','<=',$end)
         ->when($type != null,function($query) use ($type){
              $query->where('type',$type);
         })
@@ -146,9 +149,14 @@ class Ware extends Model
 
         $limit = isset($data['limit']) ? $data['limit'] : 10;
 
-        $ware = $this->wareInfo()->setappends(['product'])->orderBy('created_at','DESC')->when($product,function($query) use ($product){
+        
+        $ware = $this->wareInfo()
+        ->orderBy('created_at','DESC')
+        ->when($product,function($query) use ($product){
              $query->where('product_id',$product);
-        })->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
+        })
+        ->whereDate('created_at','>=',$start)
+        ->whereDate('created_at','<=',$end)
         ->paginate($limit)->toArray();
         
         if(!empty($ware)){
@@ -273,25 +281,50 @@ class Ware extends Model
 
     // 获取类型
     public function getTypeNameAttribute()
-    {
+    {   
+        $key = 'typeName_'.$this['type'];
+        $value = session($key, null);
+        if(is_null($value) || (time() - $value['time'] > 120)){
+           $name = $this->hasOne('App\Model\WareOperation','id','type')->first()['name']; 
+           session([$key =>['value'=>$name,'time'=>time()]]);
+           $value = session($key, null);
+        }
 
-        return $this->hasOne('App\Model\WareOperation','id','type')->first()['name'];
-
-        // return $this->TYPENAME[$this['type']];
+        return $value['value'];
     }
 
     //获取运算符
     public function getOperationAttribute(){
-        return $this->hasOne('App\Model\WareOperation','id','type')->first()['operation'];
+
+
+        $key = 'Operation_'.$this['type'];
+        $value = session($key, null);
+        if(is_null($value) || (time() - $value['time'] > 120)){
+           $name = $this->hasOne('App\Model\WareOperation','id','type')->first()['operation']; 
+           session([$key =>['value'=>$name,'time'=>time()]]);
+           $value = session($key, null);
+        }
+
+        return $value['value'];
+
     }
 
     // 获取创建用户
     public function getUserAttribute(){
-
         
-        return $this->hasOne('App\User','id','u_id')->first()['name'];
+        $key = 'User_'.$this['u_id'];
+        $value = session($key, null);
+        if(is_null($value) || (time() - $value['time'] > 120)){
+           $name = $this->hasOne('App\User','id','u_id')->first()['name']; 
+           session([$key =>['value'=>$name,'time'=>time()]]);
+           $value = session($key, null);
+        }
+
+        return $value['value'];
 
     }
+
+
 
     /*public function when($value, $callback, $default = null)
     {

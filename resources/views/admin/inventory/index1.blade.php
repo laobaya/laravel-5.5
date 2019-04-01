@@ -43,6 +43,7 @@
                     @endif
                     {{$v['key']}}</li>
                 @endforeach
+                <li>当前剩余</li>
             </ul>
             <div class="layui-tab-content">
                 @foreach($data as $k => $v)
@@ -55,7 +56,7 @@
                       <thead>
                           <tr>
                               <th>产品</th>
-                              <th>累计入库</th>
+                              <th>累计</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -66,9 +67,56 @@
                           </tr>
                         @endforeach
                       </tbody>
+                      <thead>
+                          <tr>
+                              <th>产品</th>
+                              <th>日期</th>
+                              <th>累计</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        @foreach($v['data'] as $vo)
+                          <tr>
+                              <td>{{$vo['product']}}</td>
+                              <td>{{$vo['date']}}</td>
+                              <td>{{$vo['sum']}}</td>
+                          </tr>
+                        @endforeach
+                      </tbody>
                     </table>
                   </div>
                   @endforeach
+                  <div class="layui-tab-item">
+                  <table class="layui-table">
+
+                    <thead>
+                          <tr>
+                              <th>产品</th>
+                              <th>库存剩余</th>
+                          </tr>
+                      </thead>
+                      <?php 
+
+                      foreach ($data as $value) {
+
+                          foreach ($value['value'] as $k => $val) {
+                              $arr[$k]['jisuan'][] = $value['operation'].$val['sum'];
+                              $arr[$k]['name'] = $val['product'];
+                          }
+                      }
+                      // dump($arr);
+                       ?>
+                      <tbody>
+                        @foreach($arr as $v)
+                          <tr>
+                              <td>{{$v['name']}}</td>
+                              <td>{{array_sum($v['jisuan'])}}</td>
+                          </tr>
+                        @endforeach
+                      </tbody>
+                        </table>
+                  </div>
+
                 </div>
             </div>
         </div>

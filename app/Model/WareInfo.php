@@ -27,7 +27,7 @@ class WareInfo extends Model
 
     ];//隐藏指定字段
  	protected $appends = [
- 		
+ 		'product'
  	];//查询压入字段
 
 
@@ -47,10 +47,14 @@ class WareInfo extends Model
 
         $limit = isset($data['limit']) ? $data['limit'] : 10;
         
-        $ware = $this->setappends(['Product'])->orderBy('created_at','DESC')->when($product,function($query) use ($product){
-            
+        $ware = $this
+        ->setappends(['product'])
+        ->orderBy('created_at','DESC')
+        ->when($product,function($query) use ($product){
              $query->where('product_id',$product);
-        })->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)
+        })
+        ->whereDate('created_at','>=',$start)
+        ->whereDate('created_at','<=',$end)
         ->paginate($limit)->toArray();
         
         if(!empty($ware)){
@@ -109,7 +113,16 @@ class WareInfo extends Model
     // 获取产品名
 	public function getProductAttribute()
 	{
-        return $this->hasOne('App\Model\Product','id','product_id')->first()['name'];
+
+        $key = 'Product_'.$this['product_id'];
+        $value = session($key, null);
+        if(is_null($value) || (time() - $value['time'] > 120)){
+           $name = $this->hasOne('App\Model\Product','id','product_id')->first()['name']; 
+           session([$key =>['value'=>$name,'time'=>time()]]);
+           $value = session($key, null);
+        }
+
+        return $value['value'];
 	}
 
 

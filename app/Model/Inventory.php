@@ -15,10 +15,6 @@ class Inventory extends Model
        // dump($ware);
        $arrDate = []; 
 
-       // $res = self::changkuDate([0 => 1,1 => 2,2 => 6,3 => 8,4 => 11,5 => 13]);
-       // dump($res);
-       
-
        foreach ($ware as $key => $value) {
             
             $arrDate[] = [
@@ -26,6 +22,7 @@ class Inventory extends Model
                 'value'=>self::changkuList($value),
                 'leiji'=>self::thiskucun($value),
                 'operation'=>$value[0]['operation'],
+                'data'=>self::changkuDate($value),
             ];
 
        }
@@ -39,7 +36,12 @@ class Inventory extends Model
 
         $ids = array_column($value,'id');
         
-        $Product = (new WareInfo)->setappends(['product'])->whereIn('ware_id',$ids)->groupBy('product_id')->select(DB::raw("sum(number) as sum"),'product_id')->get()->toArray();
+        $Product = (new WareInfo)
+        ->setappends(['product'])
+        ->whereIn('ware_id',$ids)
+        ->groupBy('product_id')
+        ->select(DB::raw("sum(number) as sum"),'product_id')
+        ->get()->toArray();
         
 
         return $Product;
@@ -50,21 +52,25 @@ class Inventory extends Model
     public function thiskucun($value){
 
         $ids = array_column($value,'id');
-        $Data = WareInfo::whereIn('ware_id',$ids)->sum('number');//累计减
+        $Data = WareInfo::whereIn('ware_id',$ids)->sum('number');//累计
         return $Data;
 
     }
 
     public function changkuDate($value){
 
-        // $ids = array_column($value,'id');
+        $ids = array_column($value,'id');
         
 
-        $Product = (new WareInfo)->whereIn('ware_id',$value)->groupBy('date')
-        ->select(DB::raw("date('created_at') as date"))->get()->toArray();
+        $Product = (new WareInfo)
+        ->setappends(['product'])
+        ->whereIn('ware_id',$ids)
+        ->orderBy('date','DESC')
+        ->groupBy('date')
+        ->groupBy('product_id')
+        ->select(DB::raw('date(created_at) as date ,sum(number) as sum'),'product_id')
+        ->get()->toArray();
         
-
-
         return $Product;
 
     }

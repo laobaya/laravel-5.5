@@ -22,8 +22,8 @@ class MenuController extends CommonController
 	// 加载首页
 	public function index(){
 
-		$cate_name = $this->request->input('cate_name');
-    $toload = $this->model->menuIndex($this->request);
+		$data = $this->request->except(['_token']);
+    $toload = $this->model->menuIndex($data);
         // dump($toload);
 		return self::loadView($toload);
 
@@ -78,7 +78,7 @@ class MenuController extends CommonController
    	public function state(Menu $menu){
    		// dd(1);
    		$s = $this->request->input('state');
-   		$state = $s == 1 ? 0 : 1;
+   		$state = $s ? 0 : 1;
    		$result = $menu->menuState(['state'=>$state]);
    		return $result;
 

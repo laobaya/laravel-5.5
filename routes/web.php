@@ -43,11 +43,23 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
 
 	});
 
-	// 友情链接
-	Route::group(['prefix'=>'mylink','middleware'=>[]],function(){
+	// 角色管理
+	Route::group(['prefix'=>'role','middleware'=>[]],function(){
+
+		Route::GET('/','RoleController@index');
+		Route::GET('add','RoleController@add');
+		Route::POST('add','RoleController@insert');
+		Route::POST('state','RoleController@state');
 
 
 
+		// 规则
+		Route::GET('rule','RoleController@rule');
+		Route::GET('rule/create','RoleController@ruleadd');
+		Route::POST('rule/create','RoleController@ruleinsert');
+		Route::GET('rule/{rule}/edit','RoleController@ruleedit');
+		Route::POST('rule/{rule}/edit','RoleController@ruleupdate');
+		Route::DELETE('rule/{rule}','RoleController@ruledel');
 	});
 
 
@@ -99,6 +111,8 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
 		
 	});
 
+
+	// 库存
 	Route::group(['prefix'=>'inventory','middleware'=>[]],function(){
 
 		Route::GET('/','InventoryController@index');

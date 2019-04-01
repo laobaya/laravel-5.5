@@ -14,7 +14,9 @@ class Menu extends Model
     protected $table = 'menu';//设置表名
     protected $primaryKey = 'id'; //主键
     protected $dates = ['deleted_at'];
-
+    protected $fillable = [
+        'name'
+    ];//插入字段
     /*
     * 递归调用菜单数据
     */
@@ -35,12 +37,12 @@ class Menu extends Model
     }
 
     // 加载首页
-    public function menuIndex($request){
+    public function menuIndex($data){
 
-        $cate_name = $request->input('cate_name');
+        $cate_name = isset($data['cate_name']) ? $data['cate_name'] : '' ;
         //判断是否是否传入
         if($cate_name){
-            $this->insert(['name'=>$cate_name]);
+            $this->firstOrCreate(['name'=>$cate_name]);
         }
 
         $menu = $this->sortMenu($this->orderBy('order')->get()->toArray());
@@ -126,9 +128,9 @@ class Menu extends Model
 
     //修改
     public function menuState($arr){
-
+        
         $res = $this->where('id',$this['id'])->update($arr);
-
+        // dump($res);
         if($res){
             $result = array('res'=>0,'msg'=>'切换成功');
         }else{

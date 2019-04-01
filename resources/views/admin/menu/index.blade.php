@@ -56,7 +56,9 @@
             <th>操作</th>
         </thead>
         <tbody class="x-cate">
-          
+          @if(empty($menu))
+          <tr>暂无数据</tr>
+          @else
           @foreach($menu as $v)
             
             <tr cate-id="{{$v['id']}}" fid="{{$v['pid']}}" >
@@ -103,7 +105,9 @@
             @endforeach
 
           @endforeach
-
+          
+          
+          @endif
         </tbody>
       </table>
     </div>
