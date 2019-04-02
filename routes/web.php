@@ -28,6 +28,14 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','power']]
 	// 加载后台首页菜单
 	Route::GET('left','IndexController@left');
 
+	// 用户管理
+	Route::group(['prefix'=>'user','middleware'=>[]],function(){
+
+		Route::GET('/','UserController@index');
+		Route::GET('{user}/edit','UserController@edit');
+		
+
+	});
 
 	// 菜单管理
 	Route::group(['prefix'=>'menu','middleware'=>[]],function(){

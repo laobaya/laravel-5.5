@@ -64,7 +64,7 @@ class CommonController extends Controller
     //加载视图
     protected function loadView($data=[]){
 
-
+        $data = is_array($data) ? $data : [];
 		return view(self::PathInfo(),$data);
 
     }

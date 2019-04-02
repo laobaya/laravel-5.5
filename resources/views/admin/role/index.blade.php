@@ -34,7 +34,6 @@
     </div>
     <div class="x-body">
       <xblock>
-        <!-- <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button> -->
         <button class="layui-btn" onclick="x_admin_show('添加用户','role/add')"><i class="layui-icon"></i>添加</button>
         <span class="x-right" style="line-height:40px">共有数据：{{count($role)+1}}条</span>
       </xblock>
@@ -42,7 +41,7 @@
         <thead>
           <tr>
             <th>
-              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+              <div class="layui-unselect header  layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
             </th>
             <th>ID</th>
             <th>角色名</th>
@@ -54,7 +53,7 @@
         <tbody>
           <tr>
             <td>
-              <div  lay-skin="primary" data-id=''><i class="layui-icon">&#xe605;</i></div>
+              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
             </td>
             <td>1</td>
             <td>超级管理员</td>
@@ -99,12 +98,9 @@
           @endforeach
         </tbody>
       </table>
-      
-
     </div>
     <script>
       
-
       function member_stop(obj,id){
           layer.confirm('确认要切换吗？',function(index){
               if($(obj).attr('title')=='启用'){
