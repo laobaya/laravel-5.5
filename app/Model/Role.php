@@ -28,7 +28,7 @@ class Role extends Model
     public function roleadd(){
 
         $role = $this->get();
-        $rule = Rule::get(['id','name']);
+        $rule = Rule::get(['id','name','menu_id']);
         $menu = menu::where('pid',0)->get(['id','name']);
         $toload = array(
             'role'=>$role,
@@ -53,9 +53,9 @@ class Role extends Model
 
         // dump($res);
         if($res){
-            $result = array('res'=>0,'msg'=>'更新成功');
+            $result = array('res'=>0,'msg'=>'创建成功');
         }else{
-            $result = array('res'=>1,'msg'=>'更新失败');
+            $result = array('res'=>1,'msg'=>'创建失败');
         }
         return $result;
 
@@ -63,17 +63,43 @@ class Role extends Model
 
     public function roleEdit(){
 
-        $rule = Rule::get();
+        $rule = Rule::get(['id','name','menu_id']);
         $menu = menu::where('pid',0)->get(['id','name']);
-        $ruleInfo = $this->roleInfo()->get();
+        $ruleInfo = $this->roleInfo()->pluck('rule_id')->toArray();
         $toload = [
             'role'=>$this,
             'menu'=>$menu,
             'rule_class'=>$rule,
             'info'=>$ruleInfo
         ];
-        dump($toload);
+        // dump($toload);
         return $toload;
+
+    }
+
+    public function roleUpdate($data){
+
+
+        $objId = $this->update($data);
+        $this->roleInfo()->delete();
+        
+        foreach ($data['rule'] as $k => $val) {
+            $rule[$k]['rule_id'] = $val;
+        }
+        $res = $this->roleInfo()->createMany($rule);
+
+        // $res = $this->roleInfo()->updateOrCreate(['rule_id'],$data['rule']);
+        
+        // ->synchRole($rule);
+
+        if($res){
+            $result = array('res'=>0,'msg'=>'更新成功');
+        }else{
+            $result = array('res'=>1,'msg'=>'更新失败');
+        }
+        return $result;
+
+        
 
     }
 
@@ -105,9 +131,18 @@ class Role extends Model
     // 修改菜单
     public function setMenuAttribute($value){
 
-        $val = is_string($value) ? $value : (is_array($value) ? implode(",",$value) : '');
+        $val = is_string($value) ? $value : ( is_array($value) ? implode (',',$value) : '');
         // dd($val);
         $this->attributes['menu'] = $val;
+
+    }
+    // 修改菜单
+    public function getMenuAttribute($value){
+
+        $val = is_array($value) ? $value : ( is_string($value) ? explode(',',$value) : '');
+        // dd($val);
+        return $val;
+        
 
     }
 

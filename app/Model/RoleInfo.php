@@ -14,4 +14,14 @@ class RoleInfo extends Model
     ];//插入字段
     public $timestamps = false;
 
+
+
+    public function synchRole($data){
+    	dump(1);
+    	dump($data);
+    }
+
+    public function aaa(){
+    	dd(1);
+    }
 }

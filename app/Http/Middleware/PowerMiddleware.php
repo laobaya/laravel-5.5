@@ -4,24 +4,34 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-
-class RedirectIfAuthenticated
+use App\User;
+class PowerMiddleware
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next)
     {
+
+
+        // 获取当前已认证的用户...
+        $user = Auth::user();
         
-        if (Auth::guard($guard)->check()) {
-            return redirect('/');
-        }
+        // 获取当前已认证的用户 ID...
+        $id = Auth::id();
+
+
 
         return $next($request);
     }
+
+
+
+    
+
+
 }

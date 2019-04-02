@@ -37,7 +37,7 @@ class WareInfo extends Model
         // 获取查询的条数
         // dump($data);
 
-        $start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-01');
+        $start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-01',strtotime(date('Y').'-'.(date('m')-1).'-01'));
         $end = isset($data['where']['end']) ? $data['where']['end'] : date('Y-m-t');
 
         /*$start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-d');

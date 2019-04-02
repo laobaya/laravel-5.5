@@ -3,7 +3,7 @@
   
   <head>
     <meta charset="UTF-8">
-    <title>后台登录-X-admin2.1</title>
+    <title>{{env('APP_NAME')}}</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -32,7 +32,7 @@
                         <span class="x-red">*</span>角色名
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="name" name="name" required="" lay-verify="required"
+                        <input type="text" id="name" name="name" required="" value="{{$role['name']}}" lay-verify="required"
                         autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -43,19 +43,19 @@
                     <table  class="layui-table layui-input-block">
                         <tr><td>菜单</td><td>权限</td></tr>
                         <tbody>
+
                             @if(isset($menu))
                             @foreach($menu as $v)
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="menu[]" lay-skin="primary" value="{{$v['id']}}" title="{{$v->getoriginal('name')}}">
+                                    <input type="checkbox" name="menu[]" lay-skin="primary" value="{{$v['id']}}" {{in_array($v['id'],$role['menu']) ? 'checked' : ''}} title="{{$v['name']}}">
                                 </td>
                                 
                                 <td>
                                     <div class="layui-input-block">
                                     @foreach($rule_class as $w)
-
                                     @if($v['id'] == $w['menu_id'])
-                                        <input name="rule[]" lay-skin="primary" type="checkbox" title="{{$w['name']}}" value="{{$w['id']}}"> 
+                                        <input name="rule[]" lay-skin="primary" type="checkbox" title="{{$w['name']}}" {{in_array($w['id'],$info) ? 'checked' : ''}} value="{{$w['id']}}"> 
                                     @endif
                                     @endforeach
                                 </div>
@@ -87,7 +87,7 @@
                         描述
                     </label>
                     <div class="layui-input-block">
-                        <textarea placeholder="请输入内容" id="desc" name="account" class="layui-textarea"></textarea>
+                        <textarea placeholder="请输入内容" id="desc" name="account" class="layui-textarea">{{$role['account']}}</textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -105,7 +105,7 @@
 
           //监听提交
           form.on('submit(add)', function(data){
-            console.log(data);
+            // console.log(data);
             //发异步，把数据提交给php
             $.post(" ",data.field,function(m){
                 if(m.res==0){

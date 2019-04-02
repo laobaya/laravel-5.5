@@ -17,7 +17,7 @@ Route::get('/', function () {
 })->name('/');
 
 //后台路由
-Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>[]],function(){
+Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','power']],function(){
 
 	//加载后台首页
 	Route::GET('/', 'IndexController@index')->name('admin');

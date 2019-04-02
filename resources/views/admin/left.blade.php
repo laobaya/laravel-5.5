@@ -43,6 +43,28 @@
                     </li> 
                 </ul>
             </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6b8;</i>
+                    <cite>角色</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li date-refresh="1">
+                        <a _href="role">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>角色列表</cite>
+                        </a>
+                    </li>
+                    <li date-refresh="1">
+                        <a _href="role/rule">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>规则列表</cite>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </li>
             <!-- <li>
                 <a href="javascript:;">
                     <i class="iconfont">&#xe6b8;</i>

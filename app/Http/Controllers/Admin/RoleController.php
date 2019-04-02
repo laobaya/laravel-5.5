@@ -32,6 +32,7 @@ class RoleController extends CommonController
   public function add(){
 
     $toload = $this->model->roleadd();
+    // dump($toload);
     return self::loadView($toload);
   }
 
@@ -50,6 +51,9 @@ class RoleController extends CommonController
 
   public function update(Role $role){
 
+    $data = $this->request->except(['_token']);
+    $result = $role->roleUpdate($data);
+    return $result;
   }
 
   public function state(){

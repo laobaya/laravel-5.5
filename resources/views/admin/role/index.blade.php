@@ -3,7 +3,7 @@
   
   <head>
     <meta charset="UTF-8">
-    <title>后台登录-X-admin2.1</title>
+    <title>{{env('APP_NAME')}}</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -50,6 +50,7 @@
             <th>状态</th>
             <th>操作</th>
         </thead>
+
         <tbody>
           <tr>
             <td>
@@ -67,21 +68,20 @@
           @foreach($role as $q=>$w)
           <tr>
             <td>
-              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{{$w['id']}}'><i class="layui-icon">&#xe605;</i></div>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id="{{$w['id']}}"><i class="layui-icon">&#xe605;</i></div>
             </td>
             <td>{{$q+2}}</td>
-            <td>{{$w->name}}</td>
-            <!-- <td>{{$w->menu}}</td> -->
-            <td>{{$w->account}}</td>
+            <td>{{$w['name']}}</td>
+            <td>{{$w['account']}}</td>
             <td class="td-status">
-              @if($w->state == 0)
+              @if($w['state'] == 0)
               <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
               @else
               <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">已停用</span>
               @endif
             </td>
             <td class="td-manage">
-              @if($w->state != 0)
+              @if($w['state'] != 0)
               <a onclick="member_stop(this,'{{$w['id']}}')" href="javascript:;"  title="启用">
                 <i class="layui-icon">&#xe601;</i>
               </a>

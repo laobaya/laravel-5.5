@@ -2,7 +2,7 @@
 <html  class="x-admin-sm">
 <head>
 	<meta charset="UTF-8">
-	<title>后台登录-X-admin2.1</title>
+	<title>{{env('APP_NAME')}}</title>
 	<meta name="renderer" content="webkit|ie-comp|ie-stand">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -21,7 +21,7 @@
 <body>
     <!-- 顶部开始 -->
     <div class="container">
-        <div class="logo"><a href="{{route('admin')}}">X-admin v2.1</a></div>
+        <div class="logo"><a href="{{route('admin')}}">{{env('APP_NAME')}}</a></div>
         <div class="left_open">
             <i title="展开左侧栏" class="iconfont">&#xe699;</i>
         </div>

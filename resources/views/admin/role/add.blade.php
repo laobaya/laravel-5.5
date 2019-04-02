@@ -3,7 +3,7 @@
   
   <head>
     <meta charset="UTF-8">
-    <title>后台登录-X-admin2.1</title>
+    <title>{{env('APP_NAME')}}</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -47,13 +47,13 @@
                             @foreach($menu as $v)
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="menu[]" lay-skin="primary" value="{{$v['id']}}" title="{{$v->getoriginal('name')}}">
+                                    <input type="checkbox" name="menu[]" lay-skin="primary" value="{{$v['id']}}" title="{{$v['name']}}">
                                 </td>
                                 
                                 <td>
                                     <div class="layui-input-block">
                                     @foreach($rule_class as $w)
-
+                                    
                                     @if($v['id'] == $w['menu_id'])
                                         <input name="rule[]" lay-skin="primary" type="checkbox" title="{{$w['name']}}" value="{{$w['id']}}"> 
                                     @endif

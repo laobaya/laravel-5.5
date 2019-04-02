@@ -34,8 +34,10 @@ class Ware extends Model
     //首页
     public function wareIndex($data){
         
+        //获取上个月一号到现在的
 
-        $start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-01');
+        $start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-01',strtotime(date('Y').'-'.(date('m')-1).'-01'));
+        // $start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-01');
         $end = isset($data['where']['end']) ? $data['where']['end'] : date('Y-m-t');
         $type = NULL;
         $phone = NULL;
@@ -134,29 +136,36 @@ class Ware extends Model
 
     public function wareInfoindex($data){
 
-        // 获取查询的条数
-        /*$limit = isset($data['limit']) ? $data['limit'] : 10;
-
-        $ware = $this->wareInfo()->paginate($limit)->toArray();*/
-
-        $start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-01');
-        $end = isset($data['where']['end']) ? $data['where']['end'] : date('Y-m-t');
-
-        /*$start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-d');
-        $end = isset($data['where']['end']) ? $data['where']['end'] : date('Y-m-d');*/
-        $product = isset($data['where']['product_id']) ? $data['where']['product_id'] : '';
         
 
+        /*$start = isset($data['where']['start']) ? $data['where']['start'] : date('Y-m-01',strtotime(date('Y').'-'.(date('m')-1).'-01'));
+        $end = isset($data['where']['end']) ? $data['where']['end'] : date('Y-m-t');*/
+
+        $start = isset($data['where']['start']) ? $data['where']['start'] : '';
+        $end = isset($data['where']['end']) ? $data['where']['end'] : '';
+
+        //获取需要查询的分类默认全查询
+        $product = isset($data['where']['product_id']) ? $data['where']['product_id'] : '';
+
+        // 获取查询的条数
         $limit = isset($data['limit']) ? $data['limit'] : 10;
 
         
         $ware = $this->wareInfo()
         ->orderBy('created_at','DESC')
         ->when($product,function($query) use ($product){
+
              $query->where('product_id',$product);
+
+        })->when($start,function($query) use ($start){
+
+            $query->whereDate('created_at','>=',$start);
+
+        })->when($end,function($query) use ($end){
+
+            $query->whereDate('created_at','<=',$end);
+
         })
-        ->whereDate('created_at','>=',$start)
-        ->whereDate('created_at','<=',$end)
         ->paginate($limit)->toArray();
         
         if(!empty($ware)){
@@ -171,17 +180,6 @@ class Ware extends Model
         // dd($result['data'][0]->product);
         return $result;
         
-        if(!empty($ware)){
-
-            $result = ['code'=>0,'msg'=>'获取成功','data'=>$ware['data'],'count'=>$ware['total']];
-            
-        }else{
-
-            $result = ['code'=>1,'msg'=>'获取失败'];
-
-        }
-        // dd($result['data'][0]->product);
-        return $result;
 
     }
 
