@@ -59,7 +59,7 @@ class Ware extends Model
              $query->where('phone',$phone);
         })
         ->paginate($limit)->toArray();
-        
+        // dump($ware);
         if(!empty($ware)){
 
             $result = ['code'=>0,'msg'=>'获取成功','data'=>$ware['data'],'count'=>$ware['total']];

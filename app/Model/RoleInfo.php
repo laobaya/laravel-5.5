@@ -16,12 +16,5 @@ class RoleInfo extends Model
 
 
 
-    public function synchRole($data){
-    	dump(1);
-    	dump($data);
-    }
-
-    public function aaa(){
-    	dd(1);
-    }
+    
 }

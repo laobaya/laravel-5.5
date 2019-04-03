@@ -13,10 +13,10 @@
   <script src="/static/lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript" src="/static/js/xadmin.js"></script>
   <script type="text/javascript" src="/static/js/cookie.js"></script>
-  <script>
+  <!-- <script>
       // 是否开启刷新记忆tab功能
       var is_remember = false;
-  </script>
+  </script> -->
 </head>
 <body>
     <!-- 顶部开始 -->
@@ -27,11 +27,9 @@
         </div>
         <ul class="layui-nav left fast-add" lay-filter="">
           <li class="layui-nav-item">
-            <a href="javascript:;">+新增</a>
+            <a href="javascript:;">+库存功能</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a onclick="x_admin_show('资讯','http://www.baidu.com')"><i class="iconfont">&#xe6a2;</i>资讯</a></dd>
-              <dd><a onclick="x_admin_show('图片','http://www.baidu.com')"><i class="iconfont">&#xe6a8;</i>图片</a></dd>
-               <dd><a onclick="x_admin_show('用户','http://www.baidu.com')"><i class="iconfont">&#xe6b8;</i>用户</a></dd>
+              <dd><a onclick="x_admin_show('库存详情','inventory')"><i class="iconfont">&#xe6a2;</i>库存详情</a></dd>
             </dl>
           </li>
         </ul>

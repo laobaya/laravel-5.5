@@ -13,21 +13,48 @@ class UserController extends CommonController
 
 		$this->request = $request;
 		$this->CM = 'user';//声明控制器模板路径
-		$this->PathArr = ['index'=>'index','edit'=>'edit'];//声明访问文件
+		$this->PathArr = ['index'=>'index','role'=>'edit'];//声明访问文件
 		$this->model = $user;//加载model类
 
 	}
 
 	public function index(){
 
-	    $toload = $this->model->index();
+		$data = $this->request->except(['_token']);
+	    $toload = $this->model->index($data);
 		return self::loadView($toload);
 	}
 
 	public function edit(User $user){
 
-	    $toload = $user->userEdit();
-		return self::loadView($toload);
+		$data = $this->request->except(['_token']);
+	    $result = $user->userEdit($data);
+		return $result;
 
 	}
+
+	public function role(User $user){
+
+		if($this->request->isMethod('post')){
+			$data = $this->request->input();
+
+			$result = $user->userRoleedit($data);
+
+			return $result;
+		}
+		$toload = $this->model->userRole();
+		// dump($toload);
+		return self::loadView($toload);
+	}
+
+
+
+	/*public function state(){
+
+		$data = $this->request->except(['_token']);
+	    $result = $this->model->userState($data);
+		return $result;
+	}*/
+
+
 }

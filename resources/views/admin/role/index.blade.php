@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="x-admin-sm">
   
   <head>
     <meta charset="UTF-8">

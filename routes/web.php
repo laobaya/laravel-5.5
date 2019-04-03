@@ -17,7 +17,7 @@ Route::get('/', function () {
 })->name('/');
 
 //后台路由
-Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','power']],function(){
+Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth']],function(){
 
 	//加载后台首页
 	Route::GET('/', 'IndexController@index')->name('admin');
@@ -29,16 +29,19 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','power']]
 	Route::GET('left','IndexController@left');
 
 	// 用户管理
-	Route::group(['prefix'=>'user','middleware'=>[]],function(){
+	Route::group(['prefix'=>'user','middleware'=>['power']],function(){
 
 		Route::GET('/','UserController@index');
-		Route::GET('{user}/edit','UserController@edit');
+		Route::POST('{user}/edit','UserController@edit');
+		Route::POST('state','UserController@state');
+		Route::GET('{user}/role','UserController@role');
+		Route::POST('{user}/role','UserController@role');
 		
 
 	});
 
 	// 菜单管理
-	Route::group(['prefix'=>'menu','middleware'=>[]],function(){
+	Route::group(['prefix'=>'menu','middleware'=>['power']],function(){
 
 		Route::GET('/','MenuController@index');
 		Route::GET('{menu}/add', 'MenuController@add');
@@ -52,7 +55,7 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','power']]
 	});
 
 	// 角色管理
-	Route::group(['prefix'=>'role','middleware'=>[]],function(){
+	Route::group(['prefix'=>'role','middleware'=>['power']],function(){
 
 		Route::GET('/','RoleController@index');
 		Route::GET('add','RoleController@add');
@@ -74,7 +77,7 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','power']]
 
 
 	//库存
-	Route::group(['prefix'=>'ware','middleware'=>[]],function(){
+	Route::group(['prefix'=>'ware','middleware'=>['power']],function(){
 
 		Route::GET('/','WareController@index');
 		Route::PUT('/','WareController@update');
@@ -123,7 +126,7 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','power']]
 
 
 	// 库存
-	Route::group(['prefix'=>'inventory','middleware'=>[]],function(){
+	Route::group(['prefix'=>'inventory','middleware'=>['power']],function(){
 
 		Route::GET('/','InventoryController@index');
 
