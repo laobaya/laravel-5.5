@@ -186,6 +186,24 @@
           });
       }
       
+      /*删除*/
+      function member_del(obj,id){
+          layer.confirm('确认要删除吗？',function(index){
+              //发异步删除数据
+              var url = "user/"+id;
+              $.post(url,{'_token':"{{ csrf_token() }}",'_method':'DELETE'},function(m){
+                  if(m.res == 0){
+                    $(obj).parents("tr").remove();
+                    layer.msg('已删除!',{icon:1,time:1000});
+                  }else{
+                    layer.msg(m.msg,{icon:0,time:1000});
+
+                  }
+              })
+              
+          });
+      }
+
     </script>
     
   </body>

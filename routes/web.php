@@ -32,6 +32,7 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth']],functio
 	Route::group(['prefix'=>'user','middleware'=>['power']],function(){
 
 		Route::GET('/','UserController@index');
+		Route::DELETE('{user}','UserController@del');
 		Route::POST('{user}/edit','UserController@edit');
 		Route::POST('state','UserController@state');
 		Route::GET('{user}/role','UserController@role');
@@ -116,12 +117,12 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth']],functio
 
 		Route::GET('type_add','WareController@typeadd');
 		Route::POST('type_add','WareController@typeadd');
-		Route::GET('product_add','WareController@productadd');
-		Route::POST('product_add','WareController@product_add');
-		Route::GET('{ware}/ware/product_add','WareController@productadd');
-		Route::POST('{ware}/ware/product_add','WareController@product_add');
+		Route::GET('info/product_add','WareController@productadd');
+		Route::POST('info/product_add','WareController@product_add');
+		Route::GET('{ware}/info/product_add','WareController@productadd');
+		Route::POST('{ware}/info/product_add','WareController@product_add');
 
-		
+			
 	});
 
 

@@ -139,7 +139,7 @@ class Role extends Model
     // 修改菜单
     public function getMenuAttribute($value){
 
-        $val = is_array($value) ? $value : ( is_string($value) ? explode(',',$value) : '');
+        $val = is_array($value) ? $value : ( is_string($value) ? explode(',',$value) : []);
         // dd($val);
         return $val;
         

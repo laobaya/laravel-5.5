@@ -65,6 +65,16 @@ class User extends Authenticatable
         return $result;
     }
 
+    public function userDel(){
+
+        $res = $this->where('id',$this['id'])->delete();
+        if($res){
+            $result = array('res'=>0,'msg'=>'删除成功');
+        }else{
+            $result = array('res'=>1,'msg'=>'删除失败');
+        }
+        return $result;
+    }
 
     public function userState($data){
         // dump($data);
@@ -134,11 +144,12 @@ class User extends Authenticatable
 
     }
 
+    // 获取当前登录用户
     static public function user(){
         return Auth::user();
     }
 
-
+    //权限处理
     static public function roleRule($path){
 
         $user = self::user();

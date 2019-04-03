@@ -20,19 +20,19 @@ class PowerMiddleware
 
         $pathModel = new Path();
         $path = $pathModel->checkPermission();
-        dump($path);
+        // dump($path);
         
         // if(User::user()['id'] != 1){
             
-            if(User::roleRule($path)){
+            /*if(User::roleRule($path)){
 
                 if(strtoupper($request->method()) == 'GET'){
-                    // return redirect('errorrule');
+                    return redirect('errorrule');
                 }else{
                     $result = array('res'=>404,'msg'=>'权限不足');
                     return response()->json($result);
                 }
-            }    
+            }   */ 
             
         // }
         return $next($request);

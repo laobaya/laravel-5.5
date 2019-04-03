@@ -154,12 +154,7 @@
 
         switch(obj.event){
           case 'add':// 添加
-            layer.open({
-              type: 2, 
-              skin: 'layui-layer-rim', //加上边框
-              area: ['600px','600px'], //宽高
-              content: 'ware/add'
-            });
+            x_admin_show('添加','ware/add');
           break;
           case 'delall'://删除
             var ids = extractId(data,dataLen);
@@ -175,7 +170,7 @@
             });
             
           break;
-          case 'tongall'://删除
+          case 'tongall'://批量通过
             
             var ids = extractId(data,dataLen);
             $.post('ware/alltong',{'id':ids,'_token':"{{ csrf_token() }}"},function(data){

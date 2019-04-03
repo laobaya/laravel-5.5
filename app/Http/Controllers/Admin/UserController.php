@@ -47,7 +47,10 @@ class UserController extends CommonController
 		return self::loadView($toload);
 	}
 
-
+	public function del(User $user){
+		$result = $user->userDel();
+		return $result;
+	}
 
 	/*public function state(){
 
