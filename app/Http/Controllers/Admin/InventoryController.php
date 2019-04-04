@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\model\Inventory;
+use App\Model\Inventory;
 use Illuminate\Http\Request;
 
 class InventoryController extends CommonController

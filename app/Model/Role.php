@@ -64,7 +64,7 @@ class Role extends Model
     public function roleEdit(){
 
         $rule = Rule::get(['id','name','menu_id']);
-        $menu = menu::where('pid',0)->get(['id','name']);
+        $menu = Menu::where('pid',0)->get(['id','name']);
         $ruleInfo = $this->roleInfo()->pluck('rule_id')->toArray();
         $toload = [
             'role'=>$this,
