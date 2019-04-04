@@ -22,7 +22,7 @@
 
 
     <div class="middle-box text-center animated fadeInDown">
-        <h3 class="font-bold">没有操作权限</h3>
+        <h3 class="font-bold">账号未激活(或被拉黑),请联系管理员</h3>
         <div class="error-desc">
             抱歉，页面好像去火星了~
             

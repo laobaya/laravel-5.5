@@ -17,7 +17,7 @@ class FXA
     public function handle($request, Closure $next)
     {
         if(User::user()['state'] !== 0){
-            return redirect('FXA');
+            return redirect('fxa');
         }
         return $next($request);
     }

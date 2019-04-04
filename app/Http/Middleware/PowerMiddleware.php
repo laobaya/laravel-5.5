@@ -17,13 +17,13 @@ class PowerMiddleware
      */
     public function handle($request, Closure $next)
     {
-
-        $input = $request->all(); //操作的内容
-        $path = $request->path();  //操作的路由
-        $method = $request->method();  //操作的方法
-        $ip = $request->ip();  //操作的IP
-        self::writeLog($input,$path,$method,$ip);
-
+        $method = $request->method();
+        if($method == 'POST'){
+            $input = $request->all(); //操作的内容
+            $path = $request->path();  //操作的路由
+            $ip = $request->ip();  //操作的IP
+            self::writeLog($input,$path,$method,$ip);
+        }
 
         $pathModel = new Path();
         $path = $pathModel->checkPermission();

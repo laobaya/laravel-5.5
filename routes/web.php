@@ -18,6 +18,9 @@ Route::GET('logout','Auth\LoginController@logout');
 Route::get('errorrule',function () {
     return view('errorrule');
 })->name('errorrule');//错误页面
+Route::get('fxa',function () {
+    return view('fxa');
+})->name('fxa');//错误页面
 
 //后台路由
 Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','fxa']],function(){
