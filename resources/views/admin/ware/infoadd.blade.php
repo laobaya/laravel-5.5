@@ -25,7 +25,7 @@
     <div class="x-body">
         <form class="layui-form">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-          <div class="layui-form-item">
+          <!-- <div class="layui-form-item">
               <label for="order_number" class="layui-form-label">
                   <span class="x-red">*</span>单号
               </label>
@@ -33,8 +33,9 @@
                   <input type="text" id="order_number" name="order_number" required="" lay-verify="required"
                   autocomplete="off" class="layui-input">
               </div>
-          </div>
-          
+          </div> -->
+          <input type="hidden" id="order_number" name="order_number" value="-1" required="" lay-verify="required"
+                  autocomplete="off" class="layui-input">
                    
           <div class="layui-form-item">
               <label for="product_id" class="layui-form-label">

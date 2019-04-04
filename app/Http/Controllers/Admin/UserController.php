@@ -52,12 +52,12 @@ class UserController extends CommonController
 		return $result;
 	}
 
-	/*public function state(){
+	public function state(){
 
 		$data = $this->request->except(['_token']);
 	    $result = $this->model->userState($data);
 		return $result;
-	}*/
+	}
 
 
 }

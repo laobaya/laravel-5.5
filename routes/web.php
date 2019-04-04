@@ -12,12 +12,15 @@
 */
 Auth::routes();
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('/');
+Route::GET('logout','Auth\LoginController@logout');
+
+
+Route::get('errorrule',function () {
+    return view('errorrule');
+})->name('errorrule');//错误页面
 
 //后台路由
-Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth']],function(){
+Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','fxa']],function(){
 
 	//加载后台首页
 	Route::GET('/', 'IndexController@index')->name('admin');
@@ -118,9 +121,9 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth']],functio
 		Route::GET('type_add','WareController@typeadd');
 		Route::POST('type_add','WareController@typeadd');
 		Route::GET('info/product_add','WareController@productadd');
-		Route::POST('info/product_add','WareController@product_add');
+		Route::POST('info/product_add','WareController@productadd');
 		Route::GET('{ware}/info/product_add','WareController@productadd');
-		Route::POST('{ware}/info/product_add','WareController@product_add');
+		Route::POST('{ware}/info/product_add','WareController@productadd');
 
 			
 	});

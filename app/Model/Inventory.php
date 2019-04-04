@@ -11,7 +11,7 @@ class Inventory extends Model
     public function index(){
 
         //获取库操作分类
-       $ware = (new Ware)->setappends(['type_name','operation'])->get(['id','type'])->groupBy('type_name')->toArray();
+       $ware = (new Ware)->setappends(['type_name','operation'])->where('state',0)->get(['id','type'])->groupBy('type_name')->toArray();
        // dump($ware);dd();
        $arrDate = []; 
 
@@ -38,6 +38,7 @@ class Inventory extends Model
         
         $Product = (new WareInfo)
         ->setappends(['product'])
+        ->where('state',0)
         ->whereIn('ware_id',$ids)
         ->groupBy('product_id')
         ->select(DB::raw("sum(number) as sum"),'product_id')
@@ -52,7 +53,7 @@ class Inventory extends Model
     public function thiskucun($value){
 
         $ids = array_column($value,'id');
-        $Data = WareInfo::whereIn('ware_id',$ids)->sum('number');//累计
+        $Data = WareInfo::whereIn('ware_id',$ids)->where('state',0)->sum('number');//累计
         return $Data;
 
     }
@@ -65,6 +66,7 @@ class Inventory extends Model
         $Product = (new WareInfo)
         ->setappends(['product'])
         ->whereIn('ware_id',$ids)
+        ->where('state',0)
         ->orderBy('date','DESC')
         ->groupBy('date')
         ->groupBy('product_id')

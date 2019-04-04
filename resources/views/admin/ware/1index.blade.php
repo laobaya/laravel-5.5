@@ -49,7 +49,7 @@
 
             </select>
           </div>
-          <input type="text" name="phone"  placeholder="请输入手机号" autocomplete="off" class="layui-input">
+          <!-- <input type="text" name="phone"  placeholder="请输入手机号" autocomplete="off" class="layui-input"> -->
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button><div class="layui-btn" onclick="x_admin_show('添加类型','ware/type_add')"><i class="layui-icon"></i>添加类型</div>
         </form>
         <!-- 添加类型 -->
@@ -63,7 +63,7 @@
             <th lay-data="{field:'id',sort:true}">ID</th>
             <th lay-data="{field:'name',width:100}">操作名</th>
             <th lay-data="{field:'user',width:90}">创建管理员</th>
-            <th lay-data="{field:'phone', edit: 'text'}">手机号</th>
+            <!-- <th lay-data="{field:'phone', edit: 'text'}">手机号</th> -->
             <th lay-data="{field:'created_at',sort: true,width:140}">创建时间</th>
             <th lay-data="{field:'state',width:80,templet:'#switchTpl'}">审核状态</th>
             <th lay-data="{field:'type_name'}">类型</th>

@@ -117,7 +117,7 @@ class Ware extends Model
         return $result;
     }
 
-    public function wareDel(){
+    public function wareDel($id){
 
         // dd($this['id']);
         $id = is_array($id) ? $id : ( is_string($id) ?explode (',',$id) :func_get_args());

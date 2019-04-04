@@ -32,7 +32,7 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'state','role'
+        'state','role','menu',
     ];//查询压入字段
 
     public function index($data){
@@ -144,6 +144,12 @@ class User extends Authenticatable
 
     }
 
+    public function getMenuAttribute(){
+        // dump($this['role']);
+        $res = Role::where('id',$this['role'])->first()['menu'];
+        return $res;
+
+    }
     // 获取当前登录用户
     static public function user(){
         return Auth::user();
@@ -152,18 +158,22 @@ class User extends Authenticatable
     //权限处理
     static public function roleRule($path){
 
+
         $user = self::user();
         // dump($user);
-        $ruleInfo = RoleInfo::where('role_id',$user['role'])->pluck('rule_id');
-        
-        $Info = $ruleInfo->isEmpty() ? [] : $ruleInfo;
-
-        $rule = Rule::where('rule',$path)->first();
-
-        if( empty($rule) || in_array($rule['id'],$Info)){
-            return true;
+        if($user['id'] == 1){
+            return false;
         }
-        return false;
+
+        $ruleInfo = RoleInfo::where('role_id',$user['role'])->pluck('rule_id')->toArray();
+        
+        $Info = empty($ruleInfo) ? [] : $ruleInfo;
+        $rule = Rule::where('rule',$path)->first();
+        
+        if( empty($rule) || in_array($rule['id'],$Info)){
+            return false;
+        }
+        return true;
 
     }
 }

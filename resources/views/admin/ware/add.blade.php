@@ -34,8 +34,9 @@
                   autocomplete="off" class="layui-input">
               </div>
           </div>
-          
-          <div class="layui-form-item">
+          <input type="hidden" name="phone" required="" value='-1'
+                  autocomplete="off" class="layui-input">
+          <!-- <div class="layui-form-item">
               <label for="phone" class="layui-form-label">
                   <span class="x-red">*</span>手机号
               </label>
@@ -43,7 +44,7 @@
                   <input type="text" name="phone" required="" lay-verify="phone"
                   autocomplete="off" class="layui-input">
               </div>
-          </div>
+          </div> -->
           
           <div class="layui-form-item">
               <label for="username" class="layui-form-label">

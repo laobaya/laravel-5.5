@@ -12,7 +12,7 @@
     <body>
     <div class="x-body">
         <blockquote class="layui-elem-quote">欢迎管理员：
-            <span class="x-red">test</span>！当前时间:2018-04-25 20:50:53
+            <span class="x-red">{{\Auth::user()['name']}}</span>
         </blockquote>
     </div>
         

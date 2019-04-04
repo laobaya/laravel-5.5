@@ -59,7 +59,7 @@
             <th lay-data="{field:'id',sort:true}">ID</th>
             <th lay-data="{field:'product'}">产品</th>
             <th lay-data="{field:'created_at',  sort: true}">创建时间</th>
-            <th lay-data="{field:'order_number', edit: 'text'}">单号</th>
+            <!-- <th lay-data="{field:'order_number', edit: 'text'}">单号</th> -->
             <th lay-data="{field:'state', templet:'#switchTpl'}">审核状态</th>
             <th lay-data="{field:'number', edit: 'int'}">数量</th>
             <th lay-data="{field:'remark'}">备注</th>

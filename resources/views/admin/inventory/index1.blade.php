@@ -33,6 +33,7 @@
             <i class="layui-icon" style="line-height:30px">ဂ</i></a>
     </div>
     <div class="x-body">
+      @if(count($data))
         <div class="layui-tab">
             <ul class="layui-tab-title">
                 @foreach($data as $k => $v)
@@ -114,12 +115,15 @@
                           </tr>
                         @endforeach
                       </tbody>
-                        </table>
+                      </table>
                   </div>
 
                 </div>
             </div>
         </div>
+      @else
+      <h1>暂无库存</h1>
+      @endif
         <script>
         layui.use('laydate', function() {
             var laydate = layui.laydate;
@@ -135,23 +139,7 @@
             });
         });
 
-        /*删除*/
-        function member_del(obj, id) {
-            layer.confirm('确认要删除吗？', function(index) {
-                //发异步删除数据
-                var url = "ware/" + id;
-                $.post(url, { '_token': "{{ csrf_token() }}", '_method': 'DELETE' }, function(m) {
-                    if (m.res == 0) {
-                        $(obj).parents("tr").remove();
-                        layer.msg('已删除!', { icon: 1, time: 1000 });
-                    } else {
-                        layer.msg(m.msg, { icon: 0, time: 1000 });
-
-                    }
-                })
-
-            });
-        }
+        
         </script>
 </body>
 

@@ -20,7 +20,7 @@ class Menu extends Model
     /*
     * 递归调用菜单数据
     */
-    protected function sortMenu($menus,$pid=0)
+    static protected function sortMenu($menus,$pid=0)
     {
         $arr = [];
         if (empty($menus)) {
@@ -45,7 +45,7 @@ class Menu extends Model
             $this->firstOrCreate(['name'=>$cate_name]);
         }
 
-        $menu = $this->sortMenu($this->orderBy('order')->get()->toArray());
+        $menu = self::menuList();
 
         $toload = array(
             'menu'=>$menu
@@ -72,6 +72,51 @@ class Menu extends Model
 
         return $result;
 
+    }
+
+    static public function menuList(){
+        $menu = self::sortMenu(self::orderBy('order')->get()->toArray());
+        return $menu;
+    }
+
+
+
+    static public function menuEach($data,$user){
+
+        $str = null;
+        if(empty($data)){
+            return '';
+        }
+
+        foreach ($data as $val) {
+                
+        // dump($val);
+        if($user['id'] == 1 ||  (in_array($val['id'],$user['menu']) || $val['pid'] != 0)){
+
+
+
+            $is_child = count($val['child']) ? true : false;
+            if($is_child){
+                $strheads = 'href="javascript:;"';
+                $child = '<ul class="sub-menu">'.self::menuEach($val['child'],$user).'</ul>';
+            }else{
+                $strheads = "_href=".$val['href'];
+                $child = '';
+            }
+            $ico = empty($val['ico']) ? '&#xe6a7;' : $val['ico'];
+
+$menuHtml =<<<HTML
+<li><a {$strheads}><i class="iconfont">{$ico}</i><cite>{$val['name']}</cite><i class="iconfont nav_right">&#xe697;</i></a>{$child}</li>
+HTML;
+
+$str .= $menuHtml;
+            }
+        
+        }
+
+        return $str;
+
+        
     }
 
     //加载修改信息
