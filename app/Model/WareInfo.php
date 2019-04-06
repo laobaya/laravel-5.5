@@ -27,7 +27,7 @@ class WareInfo extends Model
 
     ];//隐藏指定字段
  	protected $appends = [
- 		'product'
+ 		'product','type'
  	];//查询压入字段
 
 
@@ -111,8 +111,8 @@ class WareInfo extends Model
     }
 
     // 获取产品名
-	public function getProductAttribute()
-	{
+    public function getProductAttribute()
+    {
 
         $key = 'Product_'.$this['product_id'];
         $value = session($key, null);
@@ -123,9 +123,26 @@ class WareInfo extends Model
         }
 
         return $value['value'];
+    }
+    // 获取产品名
+	public function getTypeAttribute()
+	{
+
+        $key = 'typeName_ware_'.$this['ware_id'];
+        $value = session($key, null);
+        if(is_null($value) || (time() - $value['time'] > 120)){
+           $name = $this->hasOne('App\Model\Ware','id','ware_id')->first()['type_name']; 
+           session([$key =>['value'=>$name,'time'=>time()]]);
+           $value = session($key, null);
+        }
+
+        return $value['value'];
 	}
 
-
+    // 关联ware
+    public function wareModel(){
+        return $this->belongsTo('App\Model\Ware','ware_id','id');
+    }
 
     /*public function when($value, $callback, $default = null)
     {

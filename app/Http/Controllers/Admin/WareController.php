@@ -234,8 +234,6 @@ class WareController extends CommonController
 		return self::loadView();
 	}
 
-	public function kucun(){
-		$this->model->kucun();
-	}
+
 
 }

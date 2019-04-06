@@ -27,7 +27,7 @@ class Ware extends Model
 
     ];//隐藏指定字段
     protected $appends = [
-        
+        'operation'
     ];//查询压入字段
     protected $dates = ['deleted_at'];//软删除
 
@@ -82,7 +82,7 @@ class Ware extends Model
     //插入数据
     public function wareInsert($data){
 
-        $data['u_id'] = 1;
+        $data['u_id'] = \Auth::id();
         $res = $this->create($data);
 
         //判断是否成功插入
@@ -108,6 +108,8 @@ class Ware extends Model
     public function wareUpdate($id,$data=[]){
 
         // dump($data);
+        $data['ua_id'] = \Auth::id();
+
         $res = $this->where('id',$id)->update($data);
         if($res){
             $result = array('res'=>0,'msg'=>'更新成功');
@@ -322,7 +324,9 @@ class Ware extends Model
 
     }
 
-
+    public function WareInfoSum(){
+        return WareInfo::groupBy('ware_id')->sum('number');
+    }
 
     /*public function when($value, $callback, $default = null)
     {

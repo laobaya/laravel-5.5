@@ -7,7 +7,31 @@ use DB;
 
 class Inventory extends Model
 {
-    
+    public function inventoryIndex(){
+
+        $wareInfo = WareInfo::whereHas('wareModel',function($query){
+            $query->where('state',0);
+        })->with('wareModel')->where('state',0)->orderBy('updated_at','desc')->get(['ware_id','product_id','number','updated_at'])->groupBy('product_id')->toArray();
+        // dump($wareInfo);
+        if($wareInfo){
+
+            foreach ($wareInfo as $key => $value) {
+
+                $data[] = ['id'=>$key,'name'=>$value[0]['product'],'type'=>'库存余额','number'=>self::sumNumber($value),'date'=>$value[0]['updated_at']];
+
+            }
+
+            $result = ['code'=>0,'msg'=>'获取成功','data'=>$data];
+        }else{
+
+            $result = ['code'=>1,'msg'=>'获取失败'];
+        }
+
+        return $result;
+    }
+
+
+
     public function index(){
 
         //获取库操作分类
@@ -31,7 +55,7 @@ class Inventory extends Model
        return ['data'=>$arrDate];
     }
 
-
+    // 库存列表
     public function changkuList($value){
 
         $ids = array_column($value,'id');
@@ -49,7 +73,7 @@ class Inventory extends Model
 
     }
 
-
+    // 当前库存
     public function thiskucun($value){
 
         $ids = array_column($value,'id');
@@ -58,6 +82,7 @@ class Inventory extends Model
 
     }
 
+    // 按天分类库存
     public function changkuDate($value){
 
         $ids = array_column($value,'id');
@@ -75,6 +100,81 @@ class Inventory extends Model
         
         return $Product;
 
+    }
+
+    public function sumNumber($data){
+
+        foreach ($data as $value) {
+            $arr[] = $value['ware_model']['operation'].$value['number'] ;
+        }
+        // dump($arr);
+        return array_sum($arr);
+    }
+
+    public function GroupNumber($data){
+        $ru = [];
+        $cu = [];
+        foreach ($data as $key => $v) {
+            // dump($v);
+            if($v['ware_model']['operation'] == '+'){
+                    $ru[] = $v['number'];
+                }
+                if($v['ware_model']['operation'] == '-'){
+                    $cu[] = $v['number'];
+                }
+            }
+
+        $result = ['ru'=>array_sum($ru),'cu'=>array_sum($cu)];
+        return $result;
+    }
+
+    public function inventoryShow($id,$data=[]){
+
+
+        $limit = isset($data['limit']) ? $data['limit'] : 10;
+        $start = isset($data['where']['start']) ? $data['where']['start'] : '';
+        $end = isset($data['where']['end']) ? $data['where']['end'] : '';
+        $type = isset($data['where']['type']) ? $data['where']['type'] : '';
+
+        $wareInfo = WareInfo::whereHas('wareModel',function($query){
+            $query->where('state',0);
+        })
+        ->with('wareModel')
+        ->where('state',0)
+        ->when($type != null,function($query) use ($type){
+             $query->where('type',$type);
+        })
+        ->when($start,function($query) use ($start){
+
+            $query->whereDate('created_at','>=',$start);
+
+        })->when($end,function($query) use ($end){
+
+            $query->whereDate('created_at','<=',$end);
+
+        })
+        ->where('product_id',$id)
+        ->orderBy('updated_at','desc')
+        ->select(['ware_id','product_id','number','updated_at',DB::raw('date(updated_at) as date')])
+        ->paginate($limit)->groupBy('date');
+        // ->toArray();
+        // dump($wareInfo);
+        if($wareInfo){
+            $res = [];
+            $foreach = $wareInfo->toArray();
+            foreach ($foreach as $key => $value) {
+
+                $res[] = ['id'=>count($res)+1,'name'=>$value[0]['product'],'type'=>'库存变化','number'=>self::GroupNumber($value),'date'=>$key];
+
+            }
+
+            $result = ['code'=>0,'msg'=>'获取成功','data'=>$res,'count'=>count($wareInfo)];
+        }else{
+
+            $result = ['code'=>1,'msg'=>'获取失败'];
+        }
+
+        return $result;
     }
 
     // public function index($data=[]){
