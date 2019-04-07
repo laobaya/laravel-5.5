@@ -24,7 +24,7 @@ class Inventory extends Model
             $result = ['code'=>0,'msg'=>'获取成功','data'=>$data];
         }else{
 
-            $result = ['code'=>1,'msg'=>'获取失败'];
+            $result = ['code'=>1,'msg'=>'暂无数据'];
         }
 
         return $result;
