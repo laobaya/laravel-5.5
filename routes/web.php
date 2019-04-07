@@ -141,5 +141,12 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','fxa']],f
 
 	});
 
+	Route::group(['prefix'=>'product','middleware'=>['power']],function(){
+
+		Route::GET('/','ProductController@index');
+
+	});
+
+
 
 });
