@@ -33,7 +33,7 @@
                   <select id="role" name="role" class="valid">
                     <option value="0">无权限</option>
                     @foreach($role as $v)
-                      <option value="{{$v['id']}}">{{$v['name']}}</option>
+                      <option value="{{$v['id']}}" {{$user['role'] == $v['id'] ? 'selected' : ''}}>{{$v['name']}}</option>
                     @endforeach
                   </select>
               </div>

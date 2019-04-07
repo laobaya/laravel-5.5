@@ -42,7 +42,7 @@ class UserController extends CommonController
 
 			return $result;
 		}
-		$toload = $this->model->userRole();
+		$toload = $user->userRole();
 		// dump($toload);
 		return self::loadView($toload);
 	}

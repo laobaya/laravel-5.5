@@ -98,7 +98,8 @@ class User extends Authenticatable
 
     public function userRole(){
         $role = Role::get(['id','name']);
-        $toload = ['role'=>$role];
+        $toload = ['user'=>$this,'role'=>$role];
+        // dump($toload);
         return $toload;
     }
 
