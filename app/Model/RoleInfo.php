@@ -2,9 +2,8 @@
 
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
 
-class RoleInfo extends Model
+class RoleInfo extends BashModel
 {
     
     protected $table = 'role_access';//设置表名

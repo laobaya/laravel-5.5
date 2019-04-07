@@ -2,9 +2,8 @@
 
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
 
-class UserInfo extends Model
+class UserInfo extends BashModel
 {
     
     protected $table = 'user_extend';//设置表名

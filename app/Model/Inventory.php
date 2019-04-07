@@ -2,10 +2,9 @@
 
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
 use DB;
 
-class Inventory extends Model
+class Inventory extends BashModel
 {
     public function inventoryIndex(){
 

@@ -2,10 +2,9 @@
 
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class WareOperation extends Model
+class WareOperation extends BashModel
 {
     use SoftDeletes;
     
