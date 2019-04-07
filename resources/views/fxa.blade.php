@@ -25,8 +25,8 @@
         <h3 class="font-bold">账号未激活(或被拉黑),请联系管理员</h3>
         <div class="error-desc">
             抱歉，页面好像去火星了~
-            
         </div>
+        <div><a href="{{url('logout')}}">退出登录</a></div>
     </div>
 
     <!-- 全局js -->
