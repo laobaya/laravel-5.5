@@ -48,7 +48,7 @@
             </select>
           </div>
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
-          <div class="layui-btn" onclick="x_admin_show('添加类型','info/product_add')"><i class="layui-icon"></i>添加类型</div>
+          <div class="layui-btn" onclick="x_admin_show('添加类型','info/product_add')"><i class="layui-icon"></i>添加产品</div>
         </form>
       </div>
       <table class="layui-table" lay-data="{url:'./info?data=true',page:true,toolbar: '#toolbarDemo',id:'test'}" lay-filter="testDemo">

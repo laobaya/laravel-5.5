@@ -34,35 +34,43 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
+        <!-- <form class="layui-form layui-col-md12 x-so">
           <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
           <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
-          
+          <div class="layui-input-inline">
+            @php($productname = \App\Model\Product::select('id','name')->get())
+
+            <select name="product_id">
+              <option value="">产品名</option>
+              
+              @foreach($productname as $v)
+              <option value="{{$v['id']}}">{{$v['name']}}</option>
+              @endforeach
+
+            </select>
+          </div>
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
-        </form>
+        </form> -->
+        <!-- 添加类型 -->
+
       </div>
-      <table class="layui-table" lay-data="{url:'./info?data=true',page:true,id:'test'}" lay-filter="testDemo">
+      <table class="layui-table" lay-data="{url:'?data=true',id:'test'}" lay-filter="testDemo">
         <thead>
 
           <tr>
             <th lay-data="{type:'checkbox',fixed:'left'}">ID</th>
             <th lay-data="{field:'id',sort:true}">ID</th>
-            <th lay-data="{field:'name'}">产品</th>
-            <th lay-data="{field:'date'}">发生日期</th>
-            <th lay-data="{field:'number',templet:'#numberTpl'}">发生数量(增###减)</th>
+            <th lay-data="{field:'product'}">产品</th>
+            <th lay-data="{field:'updated_at'}">发生日期</th>
+            <th lay-data="{field:'number'}">发生数量</th>
             <th lay-data="{field:'type'}">类型</th>
-            <th lay-data="{fixed: 'right',width:220, align:'center', toolbar: '#barTpl'}">操作</th>
+            
+          </tr>
         </thead>
       </table>
 
     </div>
-    <script type="text/html" id="numberTpl">
-      <!-- 设置状态模板 -->
-      @{{d.number.ru}}###@{{d.number.cu}}
-    </script>
-    <script type="text/html" id="barTpl">
-      <a class="layui-btn layui-btn-normal" lay-event="show">查看详情</a>
-    </script>
+    
 
     <script>
       layui.use('laydate', function(){
@@ -87,19 +95,11 @@
       // $ = layui.$;
       var table = layui.table,form = layui.form;
       
-      //监听单元格编辑
-      /*table.on('edit(testDemo)', function(obj){
-        var value = obj.value //得到修改后的值
-        ,data = obj.data //得到所在行所有键值
-        ,field = obj.field; //得到字段
-        layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
-      });*/
-
       // 定义公共方法
       // 定义重载页面方法
       function reloadView(where=''){
         table.reload('test', {
-            url: 'info?data=true'
+            url: 'ware?data=true'
             ,where: {where} //设定异步数据接口的额外参数
           });
       }
@@ -117,7 +117,6 @@
         return id;
       }
 
-
       //监听行工具事件
       table.on('tool(testDemo)', function(obj){
 
@@ -126,15 +125,17 @@
         // 判断事件进行监听
         switch(obj.event){
           case 'show':
-            x_admin_show('查看详情','info/'+data.date);
+            x_admin_show('查看详情','inventory/'+data.id+'/info')
           break;
-        }        
+        }
+        
       });
 
 
       form.on('submit(sreach)', function(data){
 
         reloadView(data.field);
+        
         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
       });
     });

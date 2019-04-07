@@ -133,16 +133,12 @@ class Inventory extends BashModel
         $limit = isset($data['limit']) ? $data['limit'] : 10;
         $start = isset($data['where']['start']) ? $data['where']['start'] : '';
         $end = isset($data['where']['end']) ? $data['where']['end'] : '';
-        $type = isset($data['where']['type']) ? $data['where']['type'] : '';
-
+        
         $wareInfo = WareInfo::whereHas('wareModel',function($query){
             $query->where('state',0);
         })
         ->with('wareModel')
         ->where('state',0)
-        ->when($type != null,function($query) use ($type){
-             $query->where('type',$type);
-        })
         ->when($start,function($query) use ($start){
 
             $query->whereDate('created_at','>=',$start);
@@ -171,6 +167,33 @@ class Inventory extends BashModel
         }else{
 
             $result = ['code'=>1,'msg'=>'获取失败'];
+        }
+
+        return $result;
+    }
+
+
+    public function inventoryShowInfo($id,$date){
+
+
+        $inventoryShowInfo = WareInfo::whereHas('wareModel',function($query){
+            $query->where('state',0);
+        })
+        ->where('state',0)
+        ->whereDate('updated_at','=',$date)
+        ->where('product_id',$id)
+        ->orderBy('updated_at','desc')
+        ->select(['id','ware_id','product_id','number','updated_at',DB::raw('date(updated_at) as date')])
+        ->get()->toArray();
+        // dump($inventoryShowInfo);
+
+        if($inventoryShowInfo){
+
+            $result = ['code'=>0,'msg'=>'获取成功','data'=>$inventoryShowInfo];
+
+        }else{
+
+        $result = ['code'=>1,'msg'=>'暂无数据'];
         }
 
         return $result;

@@ -13,7 +13,7 @@ class InventoryController extends CommonController
 
 		$this->request = $request;
 		$this->CM = 'inventory';//声明控制器模板路径
-		$this->PathArr = ['index'=>'index2','show'=>'show'];//声明访问文件
+		$this->PathArr = ['index'=>'index2','show'=>'show','showInfo'=>'showInfo'];//声明访问文件
 		$this->model = $inventory;
  
 	}
@@ -51,6 +51,24 @@ class InventoryController extends CommonController
 		// dump($result);
 		return self::loadView();
 	}
+
+
+	public function showInfo($id,$date){
+
+		
+		$is_data = $this->request->input('data');
+
+		//判断是否是调用数据
+		if($is_data){
+
+			$result = $this->model->inventoryShowInfo($id,$date);
+			return $result;
+		}
+		
+		// dump($result);
+		return self::loadView();
+	}
+
 
 
 }

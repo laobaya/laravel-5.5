@@ -137,6 +137,7 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','fxa']],f
 
 		Route::GET('/','InventoryController@index');
 		Route::GET('{id}/info','InventoryController@show');
+		Route::GET('{id}/info/{date}','InventoryController@showInfo');
 
 	});
 
