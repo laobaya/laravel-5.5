@@ -16,7 +16,7 @@ class WareController extends CommonController
 
 		$this->request = $request;
 		$this->CM = 'ware';//声明控制器模板路径
-		$this->PathArr = ['index'=>'1index','add'=>'add','info'=>'info','edit'=>'edit','infoadd'=>'infoadd','typeadd'=>'typeadd','productadd'=>'productadd'];//声明访问文件
+		$this->PathArr = ['index'=>'1index','add'=>'add','info'=>'info','edit'=>'edit','infoadd'=>'infoadd'];//声明访问文件
 		$this->model = $ware;//加载model类
 
 	}
@@ -202,7 +202,7 @@ class WareController extends CommonController
 	}
 
 
-	public function typeadd(){
+	/*public function typeadd(){
 
 		if($this->request->isMethod('post')){
 			// 要执行的代码
@@ -216,9 +216,10 @@ class WareController extends CommonController
 
 		
 		return self::loadView();
-	}
+	}*/
 
-	public function productadd(){
+	/*public function productadd(){
+
 
 		if($this->request->isMethod('post')){
 			// 要执行的代码
@@ -232,7 +233,7 @@ class WareController extends CommonController
 
 		
 		return self::loadView();
-	}
+	}*/
 
 
 

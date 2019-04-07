@@ -34,14 +34,15 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <div class="layui-btn" onclick="x_admin_show('添加类型','product/add',500,230)"><i class="layui-icon"></i>添加产品</div>
+        <div class="layui-btn" onclick="x_admin_show('添加库存类型','operation/add',500,230)"><i class="layui-icon"></i>添加库存类型</div>
       </div>
-      <table class="layui-table" lay-data="{url:'product?data=true',page:true,id:'test'}" lay-filter="testDemo">
+      <table class="layui-table" lay-data="{url:'operation?data=true',page:true,id:'test'}" lay-filter="testDemo">
         <thead>
           <tr>
             <th lay-data="{type:'checkbox'}">ID</th>
             <th lay-data="{field:'id', sort: true}">ID</th>
-            <th lay-data="{field:'name'}">产品名</th>
+            <th lay-data="{field:'name'}">库存类型名</th>
+            <th lay-data="{field:'operation',templet:'#operationTpl'}">运算</th>
             <th lay-data="{field:'created_at', sort: true}">创建时间</th>
             <th lay-data="{fixed: 'right',width:220, align:'center', toolbar: '#barTpl'}">操作</th>
 
@@ -50,6 +51,10 @@
       </table>
 
     </div>
+    <script type="text/html" id="operationTpl">
+      <!-- 设置状态模板 -->
+      <input type="checkbox" name="operation" value="@{{d.operation}}" lay-skin="switch" lay-text="增|减" lay-filter="stateDemo" data-id="@{{ d.id }}" @{{ d.operation == '+' ? 'checked' : '' }}>
+    </script>
     <script type="text/html" id="barTpl">
       <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
       <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -72,8 +77,9 @@
       });
     </script>
     <script>
-    layui.use('table', function(){
-      var table = layui.table;
+    layui.use(['table','form'], function(){
+
+      var table = layui.table,form = layui.form;
       
       //监听行工具事件
       table.on('tool(testDemo)', function(obj){
@@ -97,10 +103,13 @@
           case 'edit':
             layer.prompt({
               formType: 2
-              ,title:'产品名'
+              ,title:'库存类型名'
               ,value: data.name,
             }, function(value,index){
+              
               data.name = value;
+              delete(data['operation']);
+
               $.post('',{'id':data.id,'data':data,'_token':"{{csrf_token()}}"},function(datas){
                 if(datas.res == 0){
                   obj.update(data);
@@ -114,6 +123,22 @@
         }
         
       });
+
+      // 复选框事件
+      form.on('switch(stateDemo)', function(obj){
+        // 切换状态
+        var id = $(this).attr('data-id');
+
+        $.post('',{'id':id,'val':obj.value,'_token':"{{csrf_token()}}",'_method':'PUT'},function(data){
+              if(data.res == 0){
+                $(this).attr('value',data.val);
+              }
+              layer.msg(data.msg);
+        });
+
+      });
+
+
 
     });
     </script>

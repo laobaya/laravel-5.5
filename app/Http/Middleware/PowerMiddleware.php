@@ -17,12 +17,16 @@ class PowerMiddleware
      */
     public function handle($request, Closure $next)
     {
+        $pathModel = new Path();
+        $path = $pathModel->checkPermission();
+
         $method = $request->method();
         if($method == 'POST'){
             $input = $request->all(); //操作的内容
-            $path = $request->path();  //操作的路由
+            $actionpath = $request->path();  //操作的路由
             $ip = $request->ip();  //操作的IP
-            self::writeLog($input,$path,$method,$ip);
+            $action = $path;
+            self::writeLog($input,$actionpath,$method,$ip,$action);
         }
 
         $pathModel = new Path();
@@ -43,7 +47,7 @@ class PowerMiddleware
     }
 
 
-    public  function writeLog($input,$path,$method,$ip){
+    public  function writeLog($input,$path,$method,$ip,$action){
 
 
         $id = User::user()['id'];
@@ -53,6 +57,7 @@ class PowerMiddleware
             'path' => $path,
             'method'=>$method,
             'ip'=> $ip,
+            'action'=>$action,
             'input'=>json_encode($input, JSON_UNESCAPED_UNICODE)
         ];
         \App\Model\OperationLog::insert($data);

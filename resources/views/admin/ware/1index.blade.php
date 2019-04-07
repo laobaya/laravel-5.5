@@ -214,6 +214,8 @@
               ,value: data.remark,
             }, function(value,index){
               data.remark = value;
+              delete(data['state']);
+
               $.post('',{'id':data.id,'data':data,'_token':"{{csrf_token()}}"},function(datas){
                 if(datas.res == 0){
                   obj.update(data);

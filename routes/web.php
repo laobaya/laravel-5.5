@@ -121,13 +121,17 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','fxa']],f
 		Route::DELETE('{ware}/info','WareInfoController@infodel');
 
 
-		Route::GET('type_add','WareController@typeadd');
-		Route::POST('type_add','WareController@typeadd');
-		Route::GET('info/product_add','WareController@productadd');
-		Route::POST('info/product_add','WareController@productadd');
-		Route::GET('{ware}/info/product_add','WareController@productadd');
-		Route::POST('{ware}/info/product_add','WareController@productadd');
 
+		// 添加库存类型
+		Route::GET('type_add','OperationController@typeadd');
+		Route::POST('type_add','OperationController@typeadd');
+		//添加库存类型
+		//添加产品
+		Route::GET('info/product_add','ProductController@productadd');
+		Route::POST('info/product_add','ProductController@productadd');
+		Route::GET('{ware}/info/product_add','ProductController@productadd');
+		Route::POST('{ware}/info/product_add','ProductController@productadd');
+		//添加产品
 			
 	});
 
@@ -141,12 +145,29 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','fxa']],f
 
 	});
 
+	//产品管理
 	Route::group(['prefix'=>'product','middleware'=>['power']],function(){
 
 		Route::GET('/','ProductController@index');
+		Route::GET('add','ProductController@productadd');
+		Route::POST('add','ProductController@productadd');
+		Route::POST('/','ProductController@update');
+		Route::DELETE('/','ProductController@del');
+		
 
 	});
 
+	// 库存类型运算
+	Route::group(['prefix'=>'operation','middleware'=>['power']],function(){
+
+
+		Route::GET('/','OperationController@index');
+		Route::PUT('/','OperationController@update');
+		Route::POST('/','OperationController@update');
+		Route::DELETE('/','OperationController@del');
+		Route::GET('add','OperationController@typeadd');
+		Route::POST('add','OperationController@typeadd');
+	});
 
 
 });
