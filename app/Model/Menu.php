@@ -73,8 +73,8 @@ class Menu extends BashModel
 
     }
 
-    static public function menuList(){
-        $menu = self::sortMenu(self::orderBy('order')->where('state',0)->get()->toArray());
+    static public function menuList($where=[]){
+        $menu = self::sortMenu(self::orderBy('order')->where($where)->get()->toArray());
         return $menu;
     }
 
@@ -172,7 +172,7 @@ $str .= $menuHtml;
 
     //修改
     public function menuState($arr){
-        
+        // dump($arr);
         $res = $this->where('id',$this['id'])->update($arr);
         // dump($res);
         if($res){

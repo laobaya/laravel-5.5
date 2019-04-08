@@ -78,7 +78,9 @@ class MenuController extends CommonController
    	public function state(Menu $menu){
    		// dd(1);
    		$s = $this->request->input('state');
-   		$state = $s ? 0 : 1;
+      // dump($s);
+   		$state = $s == 'true' ? 0 : 1;
+      // dump($state);
    		$result = $menu->menuState(['state'=>$state]);
    		return $result;
 

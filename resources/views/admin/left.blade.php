@@ -1,4 +1,4 @@
-@php($MenuList = \App\Model\Menu::menuList())
+@php($MenuList = \App\Model\Menu::menuList(['state'=>0]))
 @php($user = \Auth::user())
 @php($MenuEach = \App\Model\Menu::menuEach($MenuList,$user))
 
