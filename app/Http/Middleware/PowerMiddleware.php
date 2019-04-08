@@ -21,7 +21,7 @@ class PowerMiddleware
         $path = $pathModel->checkPermission();
 
         $method = $request->method();
-        if($method == 'POST'){
+        if($method != 'GET'){
             $input = $request->all(); //操作的内容
             $actionpath = $request->path();  //操作的路由
             $ip = $request->ip();  //操作的IP
