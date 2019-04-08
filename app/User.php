@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Model\Role;
 use App\Model\Rule;
 use App\Model\RoleInfo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use SoftDeletes,Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -34,6 +35,9 @@ class User extends Authenticatable
     protected $appends = [
         'state','role','menu',
     ];//查询压入字段
+
+    protected $dates = ['deleted_at'];
+    
 
     public function index($data){
 
