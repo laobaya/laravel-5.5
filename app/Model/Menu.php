@@ -74,7 +74,7 @@ class Menu extends BashModel
     }
 
     static public function menuList(){
-        $menu = self::sortMenu(self::orderBy('order')->get()->toArray());
+        $menu = self::sortMenu(self::orderBy('order')->where('state',0)->get()->toArray());
         return $menu;
     }
 
