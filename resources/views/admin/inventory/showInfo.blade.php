@@ -33,27 +33,7 @@
         <i class="layui-icon" style="line-height:30px">ဂ</i></a>
     </div>
     <div class="x-body">
-      <div class="layui-row">
-        <!-- <form class="layui-form layui-col-md12 x-so">
-          <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
-          <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
-          <div class="layui-input-inline">
-            @php($productname = \App\Model\Product::select('id','name')->get())
-
-            <select name="product_id">
-              <option value="">产品名</option>
-              
-              @foreach($productname as $v)
-              <option value="{{$v['id']}}">{{$v['name']}}</option>
-              @endforeach
-
-            </select>
-          </div>
-          <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
-        </form> -->
-        <!-- 添加类型 -->
-
-      </div>
+      
       <table class="layui-table" lay-data="{url:'?data=true',id:'test'}" lay-filter="testDemo">
         <thead>
 

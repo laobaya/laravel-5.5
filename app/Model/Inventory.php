@@ -197,15 +197,39 @@ class Inventory extends BashModel
 
     public function inventoryShowInfo($id,$date){
 
+        $start = $end = NULL;
+        switch (strlen($date)) {
+            case '4':
+                $year = TRUE;
+                break;
+
+            case '7':
+                $month = TRUE;
+                $start = date("Y-m-01",strtotime($date));
+                $end = date("Y-m-t",strtotime($date));
+                break;
+            
+            default:
+                $day = TRUE;
+                break;
+        }
 
         $inventoryShowInfo = WareInfo::whereHas('wareModel',function($query){
             $query->where('state',0);
         })
         ->where('state',0)
-        ->whereDate('updated_at','=',$date)
+        ->when(isset($year),function($query) use($date){
+            $query->whereYear('updated_at', '=', $date);
+        })
+        ->when(isset($month),function($query) use($start,$end){
+            $query->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end);
+        })
+        ->when(isset($day),function($query) use($date){
+            $query->whereDate('updated_at','=',$date);
+        })
         ->where('product_id',$id)
         ->orderBy('updated_at','desc')
-        ->select(['id','ware_id','product_id','number','updated_at',DB::raw('date(updated_at) as date')])
+        ->select(['id','ware_id','product_id','number','updated_at'])
         ->get()->toArray();
         // dump($inventoryShowInfo);
 
