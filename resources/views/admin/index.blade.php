@@ -78,7 +78,7 @@
     <!-- 中部结束 -->
     <!-- 底部开始 -->
     <div class="footer">
-        <div class="copyright">Copyright ©2017 x-admin v2.3 All Rights Reserved</div>  
+        <div class="copyright">Copyright ©2019 顾森健康 All Rights Reserved</div>  
     </div>
     <!-- 底部结束 -->
     

@@ -61,8 +61,8 @@
             <th lay-data="{type:'checkbox',fixed:'left'}">ID</th>
             <th lay-data="{field:'id',sort:true}">ID</th>
             <th lay-data="{field:'name'}">产品</th>
-            <th lay-data="{field:'date'}">发生日期</th>
-            <th lay-data="{field:'number'}">当前余额</th>
+            <th lay-data="{field:'date',sort:true}">发生日期</th>
+            <th lay-data="{field:'number',sort:true}">当前余额</th>
             <th lay-data="{field:'type'}">类型</th>
             <th lay-data="{fixed: 'right',width:220, align:'center', toolbar: '#barTpl'}">操作</th>
 
