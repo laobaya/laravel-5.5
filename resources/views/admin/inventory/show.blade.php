@@ -37,7 +37,14 @@
         <form class="layui-form layui-col-md12 x-so">
           <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
           <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
-          
+          <div class="layui-input-inline">
+            <select name="type">
+              <option value="">展示类型</option>
+              <option value="y">按年展示</option>
+              <option value="m">按月展示</option>
+              <option value="d">按天展示</option>
+            </select>
+          </div>
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>

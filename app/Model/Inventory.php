@@ -134,6 +134,28 @@ class Inventory extends BashModel
         $start = isset($data['where']['start']) ? $data['where']['start'] : '';
         $end = isset($data['where']['end']) ? $data['where']['end'] : '';
         
+        if(isset($data['where']['type'])){
+
+            switch ($data['where']['type']) {
+                case 'y':
+                    $dateStr = 'DATE_FORMAT(updated_at,"%Y") as date';
+                    break;
+
+                case 'm':
+                    $dateStr = 'DATE_FORMAT(updated_at,"%Y-%m") as date';
+                    break;
+                
+                default:
+                    $dateStr = 'DATE(updated_at) as date';
+                    break;
+            }
+
+        }else{
+
+            $dateStr = 'DATE(updated_at) as date';
+
+        }
+
         $wareInfo = WareInfo::whereHas('wareModel',function($query){
             $query->where('state',0);
         })
@@ -150,7 +172,7 @@ class Inventory extends BashModel
         })
         ->where('product_id',$id)
         ->orderBy('updated_at','desc')
-        ->select(['ware_id','product_id','number','updated_at',DB::raw('date(updated_at) as date')])
+        ->select(['ware_id','product_id','number','updated_at',DB::raw($dateStr)])
         ->paginate($limit)->groupBy('date');
         // ->toArray();
         // dump($wareInfo);
