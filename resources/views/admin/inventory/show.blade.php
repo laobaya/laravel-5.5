@@ -58,7 +58,7 @@
     </div>
     <script type="text/html" id="numberTpl">
       <!-- 设置状态模板 -->
-      @{{d.number.ru}}###@{{d.number.cu}}
+      +@{{d.number.ru}} -@{{d.number.cu}}
     </script>
     <script type="text/html" id="barTpl">
       <a class="layui-btn layui-btn-normal" lay-event="show">查看详情</a>
