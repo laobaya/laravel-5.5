@@ -26,7 +26,7 @@
         <a href="">首页</a>
         <a href="">后台菜单</a>
         <a>
-          <cite>导航元素</cite></a>
+          <cite>菜单列表</cite></a>
       </span>
       <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon" style="line-height:30px">ဂ</i></a>

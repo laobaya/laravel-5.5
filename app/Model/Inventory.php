@@ -127,6 +127,68 @@ class Inventory extends BashModel
         return $result;
     }
 
+    public function GroupMonthNumber($data){
+
+        // 转换为数组
+        $data = json_decode(json_encode($data),true);
+
+        $arrDate = [];
+        foreach ($data as $key => $value) {
+            $i = 0;
+            $arr = $arrType = $num = [];
+            foreach ($value as $k => $v) {
+
+                if(! isset($arrType[$v['type']])){
+                    $arrType[$v['type']] = $i;
+                    $num[$i] = 0;
+                    $i++;
+                }
+                $thisInde = $arrType[$v['type']];
+                $num[$thisInde] += $v['number'];
+                
+                $arr[$thisInde] = ['id'=>$v['id'],'type'=>$v['type'],'updated_at'=>$v['dateStr'],'product'=>$v['product'],'number'=>$num[$thisInde]];
+
+            }
+            $arrDate[$key] = $arr; 
+            
+        }
+        // dump($arrDate);dd();
+        $result = [];
+        array_map(function ($value) use (&$result) {
+             $result = array_merge($result, array_values($value));
+        }, $arrDate);
+
+        return $result;
+        // dump($arrDate);dd();
+        /*$data = json_decode(json_encode($data),true);
+        $result = [];
+        array_map(function ($value) use (&$result) {
+             $result = array_merge($result, array_values($value));
+        }, $data);
+        // dump($result);dd();
+        $arr = $arrType = [];
+        
+        $i = 0;
+        $num = [];
+        foreach ($result as $k => $v) {
+
+            if(! isset($arrType[$v['type']])){
+                $arrType[$v['type']] = $i;
+                $num[$i] = 0;
+                $i++;
+            }
+            $thisInde = $arrType[$v['type']];
+            $num[$thisInde] += $v['number'];
+            
+            $arr[$thisInde] = ['id'=>$v['id'],'type'=>$v['type'],'updated_at'=>$v['dateStr'],'product'=>$v['product'],'number'=>$num[$thisInde]];
+
+        }
+
+        // dump($arr);dd();
+
+        return $arr;*/
+    }
+
     public function inventoryShow($id,$data=[]){
 
 
@@ -176,6 +238,9 @@ class Inventory extends BashModel
         ->paginate($limit)->groupBy('date');
         // ->toArray();
         // dump($wareInfo);
+
+
+
         if($wareInfo){
             $res = [];
             $foreach = $wareInfo->toArray();
@@ -197,10 +262,11 @@ class Inventory extends BashModel
 
     public function inventoryShowInfo($id,$date){
 
-        $start = $end = NULL;
+        /*$start = $end = $group = NULL;
         switch (strlen($date)) {
             case '4':
                 $year = TRUE;
+                $group = 'DATE_FORMAT(updated_at,"%Y-%m") as dateStr';
                 break;
 
             case '7':
@@ -212,25 +278,73 @@ class Inventory extends BashModel
             default:
                 $day = TRUE;
                 break;
-        }
+        }*/
 
-        $inventoryShowInfo = WareInfo::whereHas('wareModel',function($query){
+        /*$inventoryShowInfo = WareInfo::whereHas('wareModel',function($query){
             $query->where('state',0);
-        })
-        ->where('state',0)
-        ->when(isset($year),function($query) use($date){
-            $query->whereYear('updated_at', '=', $date);
+        })->where('state',0)->where('product_id',$id)->orderBy('updated_at','desc');
+        ->when(isset($year),function($query) use($date,$group){
+        
+            $query->whereYear('updated_at', '=', $date)->select(['id','ware_id','product_id','number','updated_at',DB::raw($group)])->get()->groupBy('dateStr');
         })
         ->when(isset($month),function($query) use($start,$end){
-            $query->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end);
+            $query->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)->select(['id','ware_id','product_id','number'])->get();
         })
         ->when(isset($day),function($query) use($date){
-            $query->whereDate('updated_at','=',$date);
+            $query->whereDate('updated_at','=',$date)->select(['id','ware_id','product_id','number'])->get();
+        });*/
+
+
+        $inventoryShowInfothis = WareInfo::whereHas('wareModel',function($query){
+            $query->where('state',0);
+        })->where('state',0)->where('product_id',$id)->orderBy('updated_at','desc');
+
+
+        switch (strlen($date)) {
+            case '4':
+                $year = TRUE;
+                $group = 'DATE_FORMAT(updated_at,"%Y-%m") as dateStr';
+
+                $inventoryShow = $inventoryShowInfothis->whereYear('updated_at', '=', $date)->select(['id','ware_id','product_id','number','updated_at',DB::raw($group)])->get()->groupBy('dateStr');
+
+                $inventoryShowInfo = self::GroupMonthNumber($inventoryShow);
+                break;
+
+            case '7':
+                $month = TRUE;
+                $start = date("Y-m-01",strtotime($date));
+                $end = date("Y-m-t",strtotime($date));
+                $inventoryShowInfo = $inventoryShowInfothis->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)->select(['id','ware_id','product_id','number','updated_at'])->get();
+
+                break;
+            
+            default:
+                $day = TRUE;
+                $inventoryShowInfo = $inventoryShowInfothis->whereDate('updated_at','=',$date)->select(['id','ware_id','product_id','number','updated_at'])->get();
+
+                break;
+        }
+
+
+/*        ->when(isset($year),function($query) use($date,$group){
+        
+            $query->whereYear('updated_at', '=', $date)->select(['id','ware_id','product_id','number','updated_at',DB::raw($group)])->get()->groupBy('dateStr');
         })
-        ->where('product_id',$id)
-        ->orderBy('updated_at','desc')
-        ->select(['id','ware_id','product_id','number','updated_at'])
-        ->get()->toArray();
+        ->when(isset($month),function($query) use($start,$end){
+            $query->whereDate('created_at','>=',$start)->whereDate('created_at','<=',$end)->select(['id','ware_id','product_id','number'])->get();
+        })
+        ->when(isset($day),function($query) use($date){
+            $query->whereDate('updated_at','=',$date)->select(['id','ware_id','product_id','number'])->get();
+        });*/
+
+
+
+
+
+        // ->when($group,function($query){
+        //     $query->groupBy('dateStr');
+        // });
+        // ->toArray();
         // dump($inventoryShowInfo);
 
         if($inventoryShowInfo){
@@ -253,9 +367,19 @@ class Inventory extends BashModel
     //     $addid = WareOperation::where('operation',self::ADD)->get(['id']);
     //     $minus = WareOperation::where('operation',self::MINUS)->get(['id']);
 
-                
-        
-
+       /*         
+        select `id`, `ware_id`, `product_id`, `number`, DATE_FORMAT(updated_at,"%Y-%m") as dateStr 
+        from `ware_info` 
+        where exists (select * 
+                    from `warehouse` 
+                    where `ware_info`.`ware_id` = `warehouse`.`id` 
+                    and `state` = 0 
+                    and `warehouse`.`deleted_at` is null)
+        and `state` = 0 
+        and `product_id` = '3' 
+        and year(`updated_at`) = '2019' 
+        and `ware_info`.`deleted_at` is null order by `updated_at` desc
+*/
 
 
     //     // 减操作

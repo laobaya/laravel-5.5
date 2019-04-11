@@ -24,8 +24,8 @@
   <body class="">
     <div class="x-nav">
       <span class="layui-breadcrumb">
-        <a href="">首页</a>
-        <a href="">演示</a>
+        <a href="welcome">首页</a>
+        <a href="">仓库库存详情</a>
         <a>
           <cite>导航元素</cite></a>
       </span>
