@@ -37,7 +37,7 @@
           <li class="layui-nav-item">
             <a href="javascript:;">{{\Auth::user()['name']}}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a onclick="x_admin_show('修改密码','user/changepassword',550,300)">修改密码</a></dd>
+              <dd><a onclick="x_admin_show('修改密码','user/changepassword',550,400)">修改密码</a></dd>
               <dd><a href="user/resetpassword">重置密码</a></dd>
               <dd><a href="logout">退出</a></dd>
             </dl>
