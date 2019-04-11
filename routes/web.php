@@ -43,6 +43,9 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','fxa']],f
 		Route::POST('state','UserController@state');
 		Route::GET('{user}/role','UserController@role');
 		Route::POST('{user}/role','UserController@role');
+		Route::GET('changepassword','UserController@password');
+		Route::POST('changepassword','UserController@password');
+		Route::GET('resetpassword','UserController@resetpassword');
 		
 
 	});

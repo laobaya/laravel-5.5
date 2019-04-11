@@ -13,7 +13,7 @@ class UserController extends CommonController
 
 		$this->request = $request;
 		$this->CM = 'user';//声明控制器模板路径
-		$this->PathArr = ['index'=>'index','role'=>'edit'];//声明访问文件
+		$this->PathArr = ['index'=>'index','role'=>'edit','password'=>'password'];//声明访问文件
 		$this->model = $user;//加载model类
 
 	}
@@ -59,5 +59,30 @@ class UserController extends CommonController
 		return $result;
 	}
 
+	public function password(){
 
+		$user = User::user();
+		if($this->request->isMethod('post')){
+
+			$data = $this->request->input();
+
+			$result = $user->userPassword($data);
+
+			return $result;
+		}
+
+		$toload = ['user'=>$user];
+
+		return self::loadView($toload);
+
+	}
+
+	public function resetpassword(){
+
+		User::Userguard();
+		
+        $this->request->session()->invalidate();
+
+        return redirect('password/reset');
+    }
 }

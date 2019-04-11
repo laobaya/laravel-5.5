@@ -127,6 +127,32 @@ class User extends Authenticatable
 
     }
 
+
+    public function userPassword($data){
+        // dump($data);
+        // dump($this);
+        //判断密码是否正确
+
+        if(password_verify($data['oldpassword'],$this['password'])){
+            // $result = '1';
+            $arrData = ['password'=>bcrypt($data['newpassword'])];
+            $res = $this->update($arrData);
+            // dump($res);
+            if($res){
+                $result = array('res'=>0,'msg'=>'更新成功');
+            }else{
+                $result = array('res'=>1,'msg'=>'更新失败');
+            }
+
+        }else{
+            $result = array('res'=>1,'msg'=>'原密码错误,忘记密码你可以重置密码');
+        }
+
+        return $result;
+    }
+
+
+
     public function getStateAttribute(){
         
         $state =  $this->userInfo()->first()['state'];
@@ -158,6 +184,11 @@ class User extends Authenticatable
     // 获取当前登录用户
     static public function user(){
         return Auth::user();
+    }
+
+    static public function Userguard()
+    {
+        return Auth::guard();
     }
 
     //权限处理
