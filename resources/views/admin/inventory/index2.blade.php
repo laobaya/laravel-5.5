@@ -34,7 +34,7 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <!-- <form class="layui-form layui-col-md12 x-so">
+        {{--<form class="layui-form layui-col-md12 x-so">
           <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
           <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
           <div class="layui-input-inline">
@@ -50,8 +50,8 @@
             </select>
           </div>
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
-        </form> -->
-        <!-- 添加类型 -->
+        </form>--}}
+        {{-- 添加类型 --}}
 
       </div>
       <table class="layui-table" lay-data="{url:'./inventory?data=true',id:'test'}" lay-filter="testDemo">
