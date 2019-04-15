@@ -126,7 +126,8 @@ class Ware extends BashModel
         $res = $this->whereIn('id',$id)->delete();
         
         if($res){
-            $this->wareInfo()->whereIn('ware_id',$id)->delete();
+            //删除关联的所有
+            WareInfo::whereIn('ware_id',$id)->delete();
             $result = array('res'=>0,'msg'=>'删除成功');
         }else{
             $result = array('res'=>1,'msg'=>'删除失败');
