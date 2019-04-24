@@ -48,6 +48,7 @@ class WareInfo extends BashModel
         
         $ware = $this
         ->setappends(['product'])
+        ->whereHas('productModel')//判断产品是否存在不存在不显示库存
         ->orderBy('created_at','DESC')
         ->when($product,function($query) use ($product){
              $query->where('product_id',$product);

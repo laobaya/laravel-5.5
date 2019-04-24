@@ -11,7 +11,7 @@ class Inventory extends BashModel
         $wareInfo = WareInfo::whereHas('wareModel',function($query){
             $query->where('state',0);
         })
-        ->whereHas('productModel')
+        ->whereHas('productModel')//判断产品是否存在不存在不显示库存
         ->with('wareModel')->where('state',0)->orderBy('updated_at','desc')->get(['ware_id','product_id','number','updated_at'])->groupBy('product_id')->toArray();
         // dump($wareInfo);
         if($wareInfo){
