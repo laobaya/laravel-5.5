@@ -142,6 +142,10 @@ class WareInfo extends BashModel
     public function wareModel(){
         return $this->belongsTo('App\Model\Ware','ware_id','id');
     }
+    // 关联产品
+    public function productModel(){
+        return $this->belongsTo('App\Model\Product','product_id','id');
+    }
 
     /*public function when($value, $callback, $default = null)
     {
