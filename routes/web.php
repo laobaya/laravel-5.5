@@ -173,4 +173,14 @@ Route::group(['prefix'=>'/','namespace'=>'Admin','middleware'=>['auth','fxa']],f
 	});
 
 
+	// 竞价管理
+	Route::group(['prefix'=>'bidding','middleware'=>['power']],function(){
+
+		Route::group(['prefix'=>'rush'],function(){
+
+			Route::GET('/','BiddingController@rushIndex');
+
+		
+		});
+	});
 });
