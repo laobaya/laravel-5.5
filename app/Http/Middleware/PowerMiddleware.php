@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Log;
 use Closure;
 use App\User;
 use App\My\Path;
@@ -17,7 +18,9 @@ class PowerMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $pathModel = new Path();
+        
+
+        $pathModel = new Path();//获取当前访问的路径#控制器+方法
         $path = $pathModel->checkPermission();
 
         $method = $request->method();
@@ -29,11 +32,12 @@ class PowerMiddleware
             self::writeLog($input,$actionpath,$method,$ip,$action);
         }
 
-        $pathModel = new Path();
-        $path = $pathModel->checkPermission();
-        // dump($path);
+
+        //配置测试模式
+        if(env('APP_TEST',false)) return $next($request);
+
         
-        if(User::roleRule($path)){
+        if(User::roleRule($path)){//进行判断权限
 
             if(strtoupper($request->method()) == 'GET'){
                 return redirect('errorrule');
@@ -60,7 +64,14 @@ class PowerMiddleware
             'action'=>$action,
             'input'=>json_encode($input, JSON_UNESCAPED_UNICODE)
         ];
-        \App\Model\OperationLog::insert($data);
+
+        $date = date('Y-m-d');
+        Log::useFiles(storage_path('logs/custom/'.$date.'_info.log')); 
+        // Log::info("管理员=============操作开始");
+        Log::info("管理员##({$id})",$data);
+        // Log::info("管理员=============操作结束");
+
+        // \App\Model\OperationLog::insert($data);
     }
     
 

@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Log;
+use DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,10 @@ class AppServiceProvider extends ServiceProvider
     {
         //
          Schema::defaultStringLength(191); // 针对 早期 mysql 数据迁移
+
+         DB::listen(function ($query) {
+            Log::info(vsprintf(str_replace("?", "'%s'", $query->sql), $query->bindings));
+        });
     }
 
     /**
