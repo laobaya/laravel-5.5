@@ -109,7 +109,7 @@ class Inventory extends BashModel
             $arr[] = $value['ware_model']['operation'].$value['number'] ;
         }
         // dump($arr);
-        return array_sum($arr);
+        return number_format(array_sum($arr),2);
     }
 
     public function GroupNumber($data){
@@ -125,7 +125,7 @@ class Inventory extends BashModel
                 }
             }
 
-        $result = ['ru'=>array_sum($ru),'cu'=>array_sum($cu)];
+        $result = ['ru'=>number_format(array_sum($ru),2),'cu'=>number_format(array_sum($cu),2)];
         return $result;
     }
 
