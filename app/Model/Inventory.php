@@ -198,7 +198,7 @@ class Inventory extends BashModel
         $start = isset($data['where']['start']) ? $data['where']['start'] : '';
         $end = isset($data['where']['end']) ? $data['where']['end'] : '';
         
-        if(isset($data['where']['type'])){
+        // if(isset($data['where']['type'])){
 
             switch ($data['where']['type']) {
                 case 'y':
@@ -214,11 +214,11 @@ class Inventory extends BashModel
                     break;
             }
 
-        }else{
+        /*}else{
 
             $dateStr = 'DATE(updated_at) as date';
 
-        }
+        }*/
 
         $wareInfo = WareInfo::whereHas('wareModel',function($query){
             $query->where('state',0);
